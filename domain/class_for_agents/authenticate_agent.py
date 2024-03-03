@@ -22,13 +22,13 @@ class AuthenticateAgent:
             })
 
             is_authenticated = gateway_instance.get('is_authenticated', False)
-            if "is_error" in gateway_instance:
+            if "error" in gateway_instance:
                 is_error = True
-                if str(gateway_instance["is_error"]).upper() == "OTP_REQUIRED":
+                if str(gateway_instance["error"]).upper() == "OTP_REQUIRED":
                     is_otp_required = True
                     message = 'The OTP is required. Please enter the OTP: '
                 else:
-                    message = gateway_instance["is_error"]
+                    message = gateway_instance["error"]
 
             return gateway_instance, is_authenticated, is_error, message
         except Exception as e:
