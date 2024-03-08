@@ -12,10 +12,11 @@ def execute_agent(agent, agent_name: str):
     ManageDataAgent().save_data_conecction_agent(data_agent)
     uri = nameserver_conection.get_uri_agent(agent)
     authentication = AuthenticateAgent(data_agent, uri, ns_instance)
-    gateway_proxy, is_authenticated, error, message = authentication.authenticate_without_otp()
+    is_authenticated, error, message, is_exit = authentication.authenticate_without_otp()
     if error and not is_authenticated:
         print(message)
-        exit()
+        if is_exit:
+            exit()
 
     while not is_authenticated:
         print('OTP is required. Please enter the OTP: ')

@@ -1,3 +1,4 @@
+from utils.errors import ErrorTypes
 from utils.types.agent_type import AgentType
 import Pyro4
 
@@ -13,7 +14,7 @@ class AuthenticateAgent:
         is_error = False
         message = ""
         try:
-            gateway_instance = self.ns_instance.authenticate_agent_in_gateway({
+            response = self.ns_instance.authenticate_agent_in_gateway({
                 "name": self.data_agent["name"],
                 "description": self.data_agent["description"],
                 "id": self.data_agent["id"],
@@ -21,16 +22,16 @@ class AuthenticateAgent:
                 "uri": self.uri
             })
 
-            is_authenticated = gateway_instance.get('is_authenticated', False)
-            if "error" in gateway_instance:
+            is_authenticated = response.get('is_authenticated', False)
+            if "error" in response:
                 is_error = True
-                if str(gateway_instance["error"]).upper() == "OTP_REQUIRED":
-                    is_otp_required = True
-                    message = 'The OTP is required. Please enter the OTP: '
-                else:
-                    message = gateway_instance["error"]
+                message = f'{response["error"]} - {response["message"]}'
+                is_exit = False
+                if ErrorTypes.ip_blocked.value[0] == response["error"]:
+                    is_exit = True
+                return False, True, message, is_exit
 
-            return gateway_instance, is_authenticated, is_error, message
+            return is_authenticated, is_error, message, False
         except Exception as e:
             is_error = True
             message = str(e)
