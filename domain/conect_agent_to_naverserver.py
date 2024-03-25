@@ -30,7 +30,15 @@ def request_data_agent(name_agent: str):
         "ip_name_server": ip_name_server,
         "skills": skills,
     }
-    nameserver_conection = NameServerAgentConnection(data_agent)
+    nameserver_conection = NameServerAgentConnection({
+        "name": name_agent,
+        "description": description_agent,
+        "id": id_client,
+        "local_ip": get_ip(),
+        "ip_name_server": ip_name_server,
+        "skills": skills,
+
+    })
     nameserver_conection.conect_to_nameserver_manually(ip_name_server)
     return nameserver_conection, data_agent
 

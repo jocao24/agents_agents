@@ -1,5 +1,6 @@
 import Pyro4
 from domain.agent import execute_agent
+from domain.class_for_agents.authenticate_agent import ManagementSecurity
 
 
 @Pyro4.expose
@@ -11,5 +12,5 @@ class Division:
         return result
 
 
-def execute_division():
-    execute_agent(Division, "division")
+def execute_division(management_security: ManagementSecurity):
+    execute_agent(Division, "division", management_security)

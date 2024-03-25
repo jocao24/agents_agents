@@ -9,6 +9,7 @@ class ManageDataAgent:
         name_client = data_client['name']
         if not os.path.exists('agents/data'):
             os.makedirs('agents/data')
+        # Si ya existe el archivo, se sobreescribe
         with open(f'agents/data/{name_client}.json', 'w') as file:
             json.dump(data_client, file)
 
@@ -19,4 +20,7 @@ class ManageDataAgent:
                 data_client: AgentType = AgentType(**data)
                 return data_client
         except FileNotFoundError:
+            return None
+        except Exception as e:
+            print(e)
             return None

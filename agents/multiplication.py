@@ -1,5 +1,6 @@
 import Pyro4
 from domain.agent import execute_agent
+from domain.class_for_agents.authenticate_agent import ManagementSecurity
 
 
 @Pyro4.expose
@@ -11,5 +12,5 @@ class Multiplication:
         return result
 
 
-def execute_multiplication():
-    execute_agent(Multiplication, "multiplication")
+def execute_multiplication(management_security: ManagementSecurity):
+    execute_agent(Multiplication, "multiplication", management_security)

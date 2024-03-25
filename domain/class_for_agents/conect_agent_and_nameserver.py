@@ -1,5 +1,18 @@
-import Pyro4
+import base64
+import hashlib
+import json
+import threading
+from os import urandom
 
+import Pyro4
+from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
+from domain.class_for_agents.authenticate_agent import ManagementSecurity
+from utils.errors import ErrorTypes
 from utils.types.agent_type import AgentType
 from utils.get_ip import get_ip
 
@@ -20,14 +33,14 @@ class NameServerAgentConnection:
 
     def conect_to_nameserver_automatically(self):
         self.name_server = Pyro4.locateNS()
-        self.conect_to_controller()
+        self.conect_to_gateway()
         self.set_ip_name_server()
         return self.ip_name_server
 
-    def conect_to_nameserver_manually(self,  ip_name_server: str = None):
+    def conect_to_nameserver_manually(self, ip_name_server: str = None):
         self.ip_name_server = ip_name_server
         self.name_server = Pyro4.locateNS(host=self.ip_name_server, port=9090)
-        self.conect_to_controller()
+        self.conect_to_gateway()
 
     def get_name_server_instance(self):
         return self.ns_instance
@@ -35,16 +48,54 @@ class NameServerAgentConnection:
     def get_uri_agent(self, agent):
         return self.daemon.register(agent)
 
-    def conect_to_controller(self):
-        uri_ns_controller = self.name_server.lookup("ns_controller")
-        self.ns_instance = Pyro4.Proxy(uri_ns_controller)
+    def conect_to_gateway(self):
+        uri_ns_controller = self.name_server.lookup("gateway_manager")
+        proxi = Pyro4.Proxy(uri_ns_controller)
+        self.ns_instance = proxi
 
     def set_ip_name_server(self):
         self.ip_name_server = str(self.name_server).split("@")[1].split(":")[0]
 
     def register_agent(self, uri):
-        self.name_server = Pyro4.locateNS(host=self.ip_name_server, port=9090)
-        self.name_server.register(self.name_agent, uri)
+        self.ns_instance._pyroHandshake = self.get_data_agent()
+        self.name_server.register(f'{self.id_agent}-{self.name_agent}', uri, metadata={"agent": self.get_data_agent()})
+
+    def register(self, key_shared: str, agent, management_security: ManagementSecurity, code_otp: str = None, is_client: bool = False):
+
+        try:
+            request_data_to_pre_register = management_security.encrypt_data_with_shared_key(key_shared, self.id_agent)
+
+            self.ns_instance._pyroHandshake = request_data_to_pre_register
+            response = self.ns_instance.register(self.id_agent)
+            management_security.decrypt_data_responded_by_yp(response)
+
+            # Se establece un prxy con el yp
+            proxi_yp = Pyro4.Proxy(management_security.uri_yp)
+
+            data_agent = {
+                "name": self.name_agent,
+                "description": self.description_agent,
+                "skills": self.skills,
+                "is_client": is_client,
+            }
+            data_encrypted = management_security.encrypt_data_with_public_key(data_agent, management_security.public_key_yp, self.id_agent)
+
+            # Se envía la key cifrada con la clave pública del yp, el iv y los datos cifrados
+            proxi_yp.register_agent(data_encrypted)
+
+            self.name_server.register(f'{self.id_agent}', self.get_uri_agent(agent))
+            management_security.register_ok(proxi_yp, self.name_server)
+
+            # Inicializa un hilo para el daemon
+            daemon_thread = threading.Thread(target=self.daemon.requestLoop)
+            daemon_thread.daemon = True
+            daemon_thread.start()
+
+            return True, False, '', False
+        except Exception as e:
+            is_error = True
+            message = str(e)
+            return None, False, is_error, message
 
     def get_data_agent(self):
         return {

@@ -1,5 +1,6 @@
 import Pyro4
 from domain.agent import execute_agent
+from domain.class_for_agents.authenticate_agent import ManagementSecurity
 
 
 @Pyro4.expose
@@ -11,5 +12,5 @@ class Substract:
         return result
 
 
-def execute_substract():
-    execute_agent(Substract, "to_substract")
+def execute_substract(management_security: ManagementSecurity):
+    execute_agent(Substract, "to_substract", management_security)

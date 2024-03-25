@@ -1,70 +1,220 @@
-from utils.errors import ErrorTypes
-from utils.types.agent_type import AgentType
+import base64
+import json
+from os import urandom
+
 import Pyro4
+from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import padding, rsa
+from cryptography.hazmat.primitives.ciphers import Cipher, modes, algorithms
+from utils.errors import ErrorTypes
+from utils.get_ip import get_ip
 
 
-class AuthenticateAgent:
-    def __init__(self, data_agent: AgentType, uri, ns_instance):
-        self.ns_instance = ns_instance
-        self.uri = uri
-        self.data_agent = data_agent
+class ManagementSecurity:
 
-    def authenticate_without_otp(self):
-        is_otp_required = False
-        is_error = False
-        message = ""
-        try:
-            response = self.ns_instance.authenticate_agent_in_gateway({
-                "name": self.data_agent["name"],
-                "description": self.data_agent["description"],
-                "id": self.data_agent["id"],
-                "skills": self.data_agent["skills"],
-                "uri": self.uri
-            })
+    def __init__(self):
+        self.id_agent = None
+        self.private_key = self.generate_private_key()
+        self.public_key = self.generate_public_key()
+        self.shared_key = None
+        self.public_key_yp = None
+        self.uri_yp = None
+        self.ns = None
+        self.server = None
 
-            is_authenticated = response.get('is_authenticated', False)
-            if "error" in response:
-                is_error = True
-                message = f'{response["error"]} - {response["message"]}'
-                is_exit = False
-                if ErrorTypes.ip_blocked.value[0] == response["error"]:
-                    is_exit = True
-                return False, True, message, is_exit
+    def set_id_agent(self, id_agent: str):
+        self.id_agent = id_agent
 
-            return is_authenticated, is_error, message, False
-        except Exception as e:
-            is_error = True
-            message = str(e)
-            return None, False, is_error, message
+    def register_ok(self, server, ns):
+        self.server = server
+        self.ns = ns
+        self.server.report_status_ok()
 
-    def authenticate_with_otp(self, code_otp: str):
-        error = False
-        message = ""
-        try:
-            gateway_instance = self.ns_instance.authenticate_agent_in_gateway({
-                "name": self.data_agent["name"],
-                "description": self.data_agent["description"],
-                "id": self.data_agent["id"],
-                "skills": self.data_agent["skills"],
-                "code_otp": code_otp,
-                "uri": self.uri
-            })
-            is_authenticated = gateway_instance.get('is_authenticated', False)
+    def __get_padding(self):
+        return padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
 
-            if is_authenticated:
-                gateway_uri = gateway_instance.get('gateway_uri', None)
-                if not gateway_uri:
-                    print("A gateway URI was not provided.")  # No se proporcion� una URI del gateway.
-                    exit()
+    def __encode_base64(self, data):
+        return base64.b64encode(data).decode()
 
-                gateway_proxy = Pyro4.Proxy(gateway_uri)
-                print("Gateway located. Starting client...", gateway_uri)
-                return gateway_proxy, is_authenticated, error, message
+    def __encode_request(self, iv, encrypted_data, encrypted_key):
+        # Codificar el IV, los datos cifrados y la clave cifrada en base64 para su transmisión o almacenamiento
+        iv_base64 = self.__encode_base64(iv)
+        encrypted_data_base64 = self.__encode_base64(encrypted_data)
+        encrypted_key_base64 = self.__encode_base64(encrypted_key)
+
+        return {
+            "iv": iv_base64,
+            "data": encrypted_data_base64,
+            "key": encrypted_key_base64,
+            "id": self.id_agent,
+        }
+
+    def __decodify_base64(self, data_base64):
+        return base64.b64decode(data_base64)
+
+    def __decode_response(self, response):
+        iv = self.__decodify_base64(response["iv"])
+        encrypted_data = self.__decodify_base64(response["data"])
+        encrypted_key = self.__decodify_base64(response["key"])
+
+        return iv, encrypted_data, encrypted_key
+
+    def __hash_key_shared(self, key: str):
+
+        # Crea una instancia del digest de hash
+        digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+
+        # Pasa los datos a hashear (necesitan estar en bytes)
+        digest.update(key.encode())
+
+        # Finaliza el proceso de hash y obtiene el valor hash resultante
+        hash_value = digest.finalize()
+
+        return hash_value
+
+    def __create_cipher(self, iv, key):
+        return Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
+
+    def encrypt_data_with_public_key(self, data: dict, public_key: rsa.RSAPublicKey, id_agent: str):
+        self.id_agent = id_agent
+        # Convertir los datos a bytes
+        data_bytes = json.dumps(data).encode("utf-8")
+
+        # Generar un IV aleatorio
+        iv = urandom(16)
+
+        # Generar una clave simétrica segura
+        shared_key = Fernet.generate_key()
+
+        # Decodificar la clave de base64 a bytes
+        shared_key_bytes = base64.urlsafe_b64decode(shared_key)
+
+        # Crear el objeto de cifrado AES usando la clave simétrica
+        cipher = self.__create_cipher(iv, shared_key_bytes)
+        encryptor = cipher.encryptor()
+
+        # Cifrar los datos
+        encrypted_data = encryptor.update(data_bytes) + encryptor.finalize()
+
+        # Cifrar la clave simétrica con la clave pública RSA
+        encrypted_key = public_key.encrypt(
+            shared_key_bytes,
+            self.__get_padding()
+        )
+
+        return self.__encode_request(iv, encrypted_data, encrypted_key)
+
+    def decrypt_data(self, response):
+        iv, encrypted_data, encrypted_key = self.__decode_response(response)
+
+        # Decrypt the AES key using the RSA private key
+        decrypted_key = self.private_key.decrypt(
+            encrypted_key,
+            self.__get_padding()
+        )
+        cipher = self.__create_cipher(iv, decrypted_key[:32])
+        decryptor = cipher.decryptor()
+        decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
+        return json.loads(decrypted_data.decode("utf-8"))
+
+    def decrypt_data_responded_by_yp(self, response):
+        # Se desencripta la clave privada del agente
+        decrypted_data = self.decrypt_data(response)
+        self.uri_yp = decrypted_data["server_uri"]
+        self.public_key_yp = decrypted_data["public_key"]
+
+        # Se decodifica la clave pública del yp
+        public_key_yp = base64.b64decode(self.public_key_yp)
+        self.public_key_yp = serialization.load_pem_public_key(public_key_yp, backend=default_backend())
+
+    def __find_public_key_yp(self, data_decoding):
+        for key, value in data_decoding.items():
+            if isinstance(value, dict):
+                self.__find_public_key_yp(value)
             else:
-                error = True
-                message = gateway_instance['error'] + '. ' + gateway_instance['message']
-                return None, is_authenticated, error, message
-        except Exception as e:
-            error = True
-            message = str(e)
-            return None, False, error, message
+                if key == "public_key_yp":
+                    self.__set_public_key_yp(value)
+                    return True
+        return False
+
+    def __set_public_key_yp(self, public_key_yp: str):
+        public_key_yp = base64.b64decode(public_key_yp)
+        self.public_key_yp = serialization.load_pem_public_key(public_key_yp, backend=default_backend())
+
+    def __convert_in_bytes_data_to_send_gateway(self, code_otp: str):
+        data_send = {
+            "code_otp": code_otp,
+            "public_key": self.serialize_public_key().decode(),
+        }
+
+        # Serializar el diccionario a JSON y codificar a bytes
+        return json.dumps(data_send).encode('utf-8')
+
+    def encrypt_data_with_shared_key(self, key, id_agent: str, code_otp: str = ""):
+        self.id_agent = id_agent
+        data_bytes = self.__convert_in_bytes_data_to_send_gateway(code_otp)
+
+        # Generar un IV aleatorio
+        iv = urandom(16)
+
+        self.__set_shared_key(key, code_otp)
+
+        # Crear el objeto de cifrado
+        cipher = self.__create_cipher(iv, self.shared_key[:32])
+        encryptor = cipher.encryptor()
+
+        # Cifrar los datos
+        encrypted_data = encryptor.update(data_bytes) + encryptor.finalize()
+
+        # Retornar el IV y los datos cifrados (ambos necesarios para el descifrado)
+
+        iv_base64 = self.__encode_base64(iv)
+        encrypted_data_base64 = self.__encode_base64(encrypted_data)
+
+        return {
+            "id": self.id_agent,
+            "iv": iv_base64,
+            "data": encrypted_data_base64,
+        }
+
+    def generate_private_key(self):
+        return rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=2048,
+            backend=default_backend()
+        )
+
+    def generate_public_key(self):
+        return self.private_key.public_key()
+
+    def serialize_public_key(self):
+        return self.public_key.public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo
+        )
+
+    def serialize_private_key(self):
+        return self.private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption()
+        )
+
+    def __set_shared_key(self, shared_key: str, code_otp: str = ""):
+        if not code_otp:
+            code_otp = ""
+        ip = get_ip()
+        key_shared_complete = ip + self.id_agent + shared_key + code_otp + ip + self.id_agent + shared_key
+        self.shared_key = self.__hash_key_shared(key_shared_complete)
+
+    def deserialize_public_key(self, public_key: str):
+        public_key = base64.b64decode(public_key)
+        return serialization.load_pem_public_key(public_key, backend=default_backend())
+
+

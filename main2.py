@@ -1,4 +1,5 @@
 from agents.adder import execute_adder
+from agents.client_1 import execute_client_1
 from agents.substract import execute_substract
 from agents.multiplication import execute_multiplication
 from agents.division import execute_division
@@ -6,16 +7,10 @@ from domain.class_for_agents.authenticate_agent import ManagementSecurity
 
 if __name__ == '__main__':
     agents_names = {
-        1: "Sum Agent",
-        2: "Subtraction Agent",
-        3: "Multiplication Agent",
-        4: "Division Agent"
+        1: "Client 1",
     }
     agents_functions = {
-        1: execute_adder,
-        2: execute_substract,
-        3: execute_multiplication,
-        4: execute_division,
+        1: execute_client_1,
     }
     while True:
         print("Which agent.py do you want to execute?")
@@ -26,7 +21,7 @@ if __name__ == '__main__':
 
         print(f"{i}. Exit")
 
-        option = input("Enter the number of the agent you want to execute: ")
+        option = input("Enter the number of the client you want to execute: ")
         if option.isdigit():
             managament_security = ManagementSecurity()
             option = int(option)
