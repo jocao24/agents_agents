@@ -1,17 +1,8 @@
-import base64
-import hashlib
-import json
 import threading
-from os import urandom
 
 import Pyro4
-from cryptography.fernet import Fernet
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization, hashes
-from cryptography.hazmat.primitives.asymmetric import rsa, padding
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
-from domain.class_for_agents.authenticate_agent import ManagementSecurity
+from src.security.security_management import SecurityManagement
 from utils.errors import ErrorTypes
 from utils.types.agent_type import AgentType
 from utils.get_ip import get_ip
@@ -60,10 +51,11 @@ class NameServerAgentConnection:
         self.ns_instance._pyroHandshake = self.get_data_agent()
         self.name_server.register(f'{self.id_agent}-{self.name_agent}', uri, metadata={"agent": self.get_data_agent()})
 
-    def register(self, key_shared: str, agent, management_security: ManagementSecurity, code_otp: str = None, is_client: bool = False):
+    def register(self, key_shared: str, agent, management_security: SecurityManagement, code_otp: str = '', is_client: bool = False) :
 
         try:
-            request_data_to_pre_register = management_security.encrypt_data_with_shared_key(key_shared, self.id_agent)
+            request_data_to_pre_register = management_security.encrypt_data_with_shared_key(key_shared, self.id_agent, code_otp)
+            print("Data encrypted to pre-register: ", request_data_to_pre_register)
 
             self.ns_instance._pyroHandshake = request_data_to_pre_register
             response = self.ns_instance.register(self.id_agent)
@@ -93,9 +85,14 @@ class NameServerAgentConnection:
 
             return True, False, '', False
         except Exception as e:
-            is_error = True
-            message = str(e)
-            return None, False, is_error, message
+            parts_message = (str(e).split(') rejected: '))[1].split(": ")
+            type_error = parts_message[0]
+            message_error = parts_message[1]
+            error_type = ErrorTypes(type_error, message_error)
+            print(error_type)
+            # Se corta el mensa
+            message = error_type
+            return None, True, message, False
 
     def get_data_agent(self):
         return {

@@ -1,30 +1,33 @@
 import Pyro4
-from domain.agent import execute_agent
-from domain.class_for_agents.authenticate_agent import ManagementSecurity
-from domain.client import execute_client
+from src.security.security_management import SecurityManagement
+from src.menus.client import execute_client
 
 
 class Client1:
-    def __init__(self, management_security: ManagementSecurity):
+    def __init__(self, management_security: SecurityManagement):
         self.management_security = management_security
         self.proxy_yellow_page = None
         self.list_agents = []
 
     @Pyro4.expose
     def ping(self, data: dict):
+        print("The client_1 agent receives a ping from the Yellow Page.\n " + str(data))
         data_desencrypted = self.management_security.decrypt_data(data)
+        print("The ping is decrypted using hybrid encryption: \n" + str(data_desencrypted))
         print(data_desencrypted)
 
     @Pyro4.expose
     def update_list_agents(self, data: dict):
+        print("The client_1 agent receives from the Yellow Page the agent directory in encrypted form.\n " + str(data))
         data_desencrypted = self.management_security.decrypt_data(data)
-        self.list_agents = data_desencrypted
+        print("The agent directory is decrypted using hybrid encryption: \n" + str(data_desencrypted))
         print(self.list_agents)
 
     @Pyro4.expose
     def receive_list_agents(self, data: dict):
+        print("The client_1 agent receives from the Yellow Page the agent directory in encrypted form.\n " + str(data))
         data_desencrypted = self.management_security.decrypt_data(data)
-        print(data_desencrypted)
+        print("The agent directory is decrypted using hybrid encryption: \n" + str(data_desencrypted))
         self.list_agents = data_desencrypted
 
     def get_list_agents(self):
@@ -56,9 +59,9 @@ class Client1:
             print(response)
             return response
         else:
-            print("The agent.py does not exist.")
+            print("The agents.py does not exist.")
 
 
-def execute_client_1(management_security: ManagementSecurity):
+def execute_client_1(management_security: SecurityManagement):
     client_1 = Client1(management_security)
     execute_client(client_1, "client_1", management_security)

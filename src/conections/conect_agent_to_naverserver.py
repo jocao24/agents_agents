@@ -1,13 +1,13 @@
 import uuid
-from domain.class_for_agents.conect_agent_and_nameserver import NameServerAgentConnection
+from src.conections.nameserver_agent_conection import NameServerAgentConnection
 from utils.types.agent_type import AgentType
 from utils.get_ip import get_ip
 from utils.validate_ip import validate_ip
 
 
 def request_data_agent(name_agent: str):
-    description_agent = input('Enter the description of the agent.py: ')
-    skills = input('Enter the skills of the agent.py separated by commas: ')
+    description_agent = input('Enter the description of the agents.py: ')
+    skills = input('Enter the skills of the agents.py separated by commas: ')
     skills = skills.split(',')
     id_client = str(uuid.uuid4())
 

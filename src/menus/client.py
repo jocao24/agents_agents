@@ -1,28 +1,28 @@
-import threading
 import time
 
-import Pyro4
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from domain.class_for_agents.authenticate_agent import ManagementSecurity
-from domain.class_for_agents.conect_agent_and_nameserver import NameServerAgentConnection
-from domain.class_for_agents.manage_data_agent import ManageDataAgent
-from domain.conect_agent_to_naverserver import connect_agent_to_nameserver
-from cryptography.hazmat.backends import default_backend
+from src.security.security_management import SecurityManagement
+from src.management_data.manage_data_agent import ManageDataAgent
+from src.conections.conect_agent_to_naverserver import connect_agent_to_nameserver
+
+from utils.errors import ErrorTypes
 
 
-def execute_client(client, client_name: str, management_security: ManagementSecurity):
+def execute_client(client, client_name: str, management_security: SecurityManagement):
     key_shared = input('Enter the shared key: ')
     data_agent = ManageDataAgent().get_data_conection_agent(client_name)
     nameserver_conection, data_agent = connect_agent_to_nameserver(data_agent, client_name)
     ManageDataAgent().save_data_conecction_agent(data_agent)
+    code_otp = ''
     while True:
         try:
-            is_authenticated, error, message, is_exit = nameserver_conection.register(key_shared, client, management_security, '', True)
-            if error and not is_authenticated:
+            _, error, message, _ = nameserver_conection.register(key_shared, client, management_security, code_otp, True)
+            if error:
                 print(message)
-            if is_exit:
-                exit()
+                if message == ErrorTypes.ip_blocked:
+                    exit()
+                if message == ErrorTypes.otp_required or message == ErrorTypes.otp_incorrect:
+                    code_otp = input("Enter Code OTP")
+                    continue
             break
         except Exception as e:
             print(e)

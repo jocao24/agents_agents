@@ -12,13 +12,14 @@ from utils.errors import ErrorTypes
 from utils.get_ip import get_ip
 
 
-class ManagementSecurity:
+class SecurityManagement:
 
     def __init__(self):
         self.id_agent = None
         self.private_key = self.generate_private_key()
         self.public_key = self.generate_public_key()
-        self.shared_key = None
+        self.shared_key_cifrate_yp = None
+        self.shared_key__cifrate_ns = None
         self.public_key_yp = None
         self.uri_yp = None
         self.ns = None
@@ -147,10 +148,20 @@ class ManagementSecurity:
         public_key_yp = base64.b64decode(public_key_yp)
         self.public_key_yp = serialization.load_pem_public_key(public_key_yp, backend=default_backend())
 
-    def __convert_in_bytes_data_to_send_gateway(self, code_otp: str):
+    def __convert_in_bytes_data_to_send_yp(self):
+        data_send = {
+            "public_key": self.serialize_public_key().decode(),
+        }
+
+        # Serializar el diccionario a JSON y codificar a bytes
+        return json.dumps(data_send).encode('utf-8')
+
+    def __convert_in_bytes_data_to_send_deamon(self, data_cifrated_yp: dict, code_otp: str = ''):
+        if not code_otp:
+            code_otp = ""
         data_send = {
             "code_otp": code_otp,
-            "public_key": self.serialize_public_key().decode(),
+            "data_cifrated_yp": data_cifrated_yp,
         }
 
         # Serializar el diccionario a JSON y codificar a bytes
@@ -158,30 +169,67 @@ class ManagementSecurity:
 
     def encrypt_data_with_shared_key(self, key, id_agent: str, code_otp: str = ""):
         self.id_agent = id_agent
-        data_bytes = self.__convert_in_bytes_data_to_send_gateway(code_otp)
+        data_yp_bytes = self.__convert_in_bytes_data_to_send_yp()
+        print('Data send yp: ', data_yp_bytes)
 
         # Generar un IV aleatorio
         iv = urandom(16)
+        
+        self.__set_shared_key_yp(key, code_otp)
 
-        self.__set_shared_key(key, code_otp)
+        print('Shared key yp: ', self.shared_key_cifrate_yp)
 
         # Crear el objeto de cifrado
-        cipher = self.__create_cipher(iv, self.shared_key[:32])
+        cipher = self.__create_cipher(iv, self.shared_key_cifrate_yp[:32])
         encryptor = cipher.encryptor()
 
         # Cifrar los datos
-        encrypted_data = encryptor.update(data_bytes) + encryptor.finalize()
+        encrypted_data = encryptor.update(data_yp_bytes) + encryptor.finalize()
 
         # Retornar el IV y los datos cifrados (ambos necesarios para el descifrado)
 
         iv_base64 = self.__encode_base64(iv)
         encrypted_data_base64 = self.__encode_base64(encrypted_data)
 
-        return {
+        data_yp = {
+            "iv": iv_base64,
+            "data": encrypted_data_base64,
+        }
+
+        print('Data send yp cifrated: ', data_yp)
+
+        data_deamon_bytes = self.__convert_in_bytes_data_to_send_deamon(data_yp, code_otp)
+
+        print('Data send deamon: ', data_deamon_bytes)
+
+        # Generar un IV aleatorio
+        iv = urandom(16)
+
+        self.__set_shared_key_deamon(key)
+
+        print('Shared key deamon: ', self.shared_key__cifrate_ns)
+
+        # Crear el objeto de cifrado
+        cipher = self.__create_cipher(iv, self.shared_key__cifrate_ns[:32])
+        encryptor = cipher.encryptor()
+
+        # Cifrar los datos
+        encrypted_data = encryptor.update(data_deamon_bytes) + encryptor.finalize()
+
+        # Retornar el IV y los datos cifrados (ambos necesarios para el descifrado)
+
+        iv_base64 = self.__encode_base64(iv)
+        encrypted_data_base64 = self.__encode_base64(encrypted_data)
+
+        data_send_deamon = {
             "id": self.id_agent,
             "iv": iv_base64,
             "data": encrypted_data_base64,
         }
+
+        print('Data send deamon cifrated: ', data_send_deamon)
+
+        return data_send_deamon
 
     def generate_private_key(self):
         return rsa.generate_private_key(
@@ -206,15 +254,18 @@ class ManagementSecurity:
             encryption_algorithm=serialization.NoEncryption()
         )
 
-    def __set_shared_key(self, shared_key: str, code_otp: str = ""):
+    def __set_shared_key_yp(self, shared_key: str, code_otp: str = ""):
         if not code_otp:
             code_otp = ""
         ip = get_ip()
-        key_shared_complete = ip + self.id_agent + shared_key + code_otp + ip + self.id_agent + shared_key
-        self.shared_key = self.__hash_key_shared(key_shared_complete)
+        key_shared_complete = ip + code_otp + self.id_agent + code_otp + shared_key + ip + self.id_agent + shared_key + code_otp
+        self.shared_key_cifrate_yp = self.__hash_key_shared(key_shared_complete)
+
+    def __set_shared_key_deamon(self, shared_key: str):
+        ip = get_ip()
+        key_shared_complete = shared_key + ip + self.id_agent + shared_key + ip +  shared_key  + ip + self.id_agent + shared_key
+        self.shared_key__cifrate_ns = self.__hash_key_shared(key_shared_complete)
 
     def deserialize_public_key(self, public_key: str):
         public_key = base64.b64decode(public_key)
         return serialization.load_pem_public_key(public_key, backend=default_backend())
-
-
