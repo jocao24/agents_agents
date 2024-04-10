@@ -18,14 +18,18 @@ def execute_agent(agent, agent_name: str, management_security: SecurityManagemen
                 print(message)
                 if message == ErrorTypes.ip_blocked:
                     exit()
-                if message == ErrorTypes.otp_required or message == ErrorTypes.otp_incorrect:
+                elif message == ErrorTypes.otp_required or message == ErrorTypes.otp_incorrect:
                     code_otp = input("Enter Code OTP")
                     continue
+                elif error and message:
+                    input("The Yellow Page is not registered. Press enter to try again.")
+
             break
         except Exception as e:
             print(e)
+            input("The Yellow Page is not registered. Press enter to try again.")
             pass
     print('Authenticated successfully.')
-    print("The agents.py is ready for operations.")
+    print("The agents_remote_objects.py is ready for operations.")
     while True:
         input()

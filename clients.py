@@ -1,4 +1,4 @@
-from src.agents import execute_client_1
+from src.agents_remote_objects.client_1 import execute_client_1
 from src.security.security_management import SecurityManagement
 
 if __name__ == '__main__':
@@ -9,7 +9,7 @@ if __name__ == '__main__':
         1: execute_client_1,
     }
     while True:
-        print("Which agents.py do you want to execute?")
+        print("Which agents_remote_objects.py do you want to execute?")
         i = 1
         for key, value in agents_names.items():
             print(f"{key}. {value}")

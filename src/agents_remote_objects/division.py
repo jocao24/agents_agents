@@ -3,35 +3,33 @@ from src.menus.agent import execute_agent
 from src.security.security_management import SecurityManagement
 
 
-class Adder:
+@Pyro4.expose
+class Division:
     def __init__(self, management_security: SecurityManagement):
         self.management_security = management_security
         self.proxy_yellow_page = None
         self.list_agents = {}
 
     @Pyro4.expose
-    def ping(self, data: dict):
-        print("The adder agent receives a ping from the Yellow Page.\n " + str(data))
-        data_desencrypted = self.management_security.decrypt_data(data)
-        print("The ping is decrypted using hybrid encryption: \n" + str(data_desencrypted))
+    def ping(self):
+        return "pong"
 
     @Pyro4.expose
     def receive_list_agents(self, data: dict):
-        print("The adder agent receives from the Yellow Page the agent directory in encrypted form.\n " + str(data))
+        print("The division agent receives from the Yellow Page the agent directory in encrypted form.\n " + str(data))
         data_desencrypted = self.management_security.decrypt_data(data)
         print("The agent directory is decrypted using hybrid encryption: \n" + str(data_desencrypted))
-        print(data_desencrypted)
         self.list_agents = data_desencrypted
 
     @Pyro4.expose
     def execute(self, data: dict):
-        print("The adder agent receives a request to perform an addition operation.\n " + str(data))
+        print("The division agent receives a request to perform a division operation.\n " + str(data))
         data_desencrypted = self.management_security.decrypt_data(data)
         print("The request is decrypted using hybrid encryption: \n" + str(data_desencrypted))
         if data_desencrypted["num1"] and data_desencrypted["num2"]:
-            print("The sum agents.py has received: " + str((data_desencrypted["num1"], data_desencrypted["num2"])))
-            result = data_desencrypted["num1"] + data_desencrypted["num2"]
-            print("The adder agents is sending: " + str(result))
+            print("The division agents_remote_objects.py has received: " + str((data_desencrypted["num1"], data_desencrypted["num2"])))
+            result = data_desencrypted["num1"] / data_desencrypted["num2"]
+            print("The division agent is sending: " + str(result))
             # Se busca la llave publica del agente que envio la peticion
             id_agent = data["id"]
             public_key_org = self.list_agents[id_agent]["public_key"]
@@ -46,7 +44,6 @@ class Adder:
             return "The data is not valid."
 
 
-def execute_adder(management_security: SecurityManagement):
-    adder = Adder(management_security)
-    execute_agent(adder, "adder", management_security)
-
+def execute_division(management_security: SecurityManagement):
+    division = Division(management_security)
+    execute_agent(division, "division", management_security)

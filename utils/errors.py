@@ -15,6 +15,7 @@ class ErrorTypes(Enum):
     error_unknown = ("error_unknown", "Unknown error.")
     id_entity_required = ("id_entity_required", "An ID is required to authenticate to the GatewayManager.")
     invalid_uuid = ("invalid_uuid", "The entity ID is not valid.")
+    yp_not_registered = ("yp_not_registered", "The YellowPage is not registered.")
 
     def __init__(self, code, message):
         self.code = code

@@ -24,6 +24,7 @@ class Client1:
         print(self.list_agents)
 
     @Pyro4.expose
+
     def receive_list_agents(self, data: dict):
         print("The client_1 agent receives from the Yellow Page the agent directory in encrypted form.\n " + str(data))
         data_desencrypted = self.management_security.decrypt_data(data)
@@ -59,7 +60,7 @@ class Client1:
             print(response)
             return response
         else:
-            print("The agents.py does not exist.")
+            print("The agents_remote_objects.py does not exist.")
 
 
 def execute_client_1(management_security: SecurityManagement):

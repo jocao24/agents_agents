@@ -1,7 +1,7 @@
-from src.agents import execute_adder
-from src.agents.substract import execute_substract
-from src.agents.multiplication import execute_multiplication
-from src.agents.division import execute_division
+from src.agents_remote_objects.adder import execute_adder
+from src.agents_remote_objects.substract import execute_substract
+from src.agents_remote_objects.multiplication import execute_multiplication
+from src.agents_remote_objects.division import execute_division
 from src.security.security_management import SecurityManagement
 
 if __name__ == '__main__':
@@ -18,7 +18,7 @@ if __name__ == '__main__':
         4: execute_division,
     }
     while True:
-        print("Which agents.py do you want to execute?")
+        print("Which agents_remote_objects.py do you want to execute?")
         i = 1
         for key, value in agents_names.items():
             print(f"{key}. {value}")

@@ -12,56 +12,74 @@ def execute_client(client, client_name: str, management_security: SecurityManage
     data_agent = ManageDataAgent().get_data_conection_agent(client_name)
     nameserver_conection, data_agent = connect_agent_to_nameserver(data_agent, client_name)
     ManageDataAgent().save_data_conecction_agent(data_agent)
+
+    authenticate_user(nameserver_conection, key_shared, client, management_security, client_name)
+
+    # Autenticación exitosa y recogida inicial de agentes
+    skills, agents = refresh_agents_list(client)
+
+    while True:
+        display_skills(skills)
+        skill_selection = input('Enter the number of the skill you want to use or refresh the list: ')
+
+        if skill_selection.lower() == 'r':
+            skills, agents = refresh_agents_list(client)
+            continue
+        elif skill_selection.isdigit():
+            skill_selection = int(skill_selection)
+            if 1 <= skill_selection <= len(skills):
+                id_agent = agents[skill_selection - 1]['id']
+                perform_operation(client, id_agent)
+            else:
+                print('Invalid selection. Please enter a valid number or R to refresh.')
+        else:
+            print('Invalid input. Please enter a number or R to refresh the list.')
+
+
+def authenticate_user(nameserver_conection, key_shared, client, management_security, client_name):
     code_otp = ''
     while True:
         try:
-            _, error, message, _ = nameserver_conection.register(key_shared, client, management_security, code_otp, True)
+            _, error, message, _ = nameserver_conection.register(key_shared, client, management_security, code_otp,
+                                                                 True)
             if error:
                 print(message)
                 if message == ErrorTypes.ip_blocked:
                     exit()
-                if message == ErrorTypes.otp_required or message == ErrorTypes.otp_incorrect:
-                    code_otp = input("Enter Code OTP")
+                elif message in [ErrorTypes.otp_required, ErrorTypes.otp_incorrect]:
+                    code_otp = input("Enter OTP Code: ")
                     continue
             break
         except Exception as e:
             print(e)
-            pass
+            input('Press enter to try again. ')
     print('Authenticated successfully.')
     print(f"The client {client_name} is ready for operations.")
-    # Se agrega un tiempo de espera para que el cliente pueda recibir la lista de agentes
-    # Se esparan 1 segundos para que el cliente pueda recibir la lista de agentes
     time.sleep(1)
-    print('Available skills: ')
-    i = 1
-    skills = []
-    for agent in client.get_list_agents():
-        print(f"{i}. {agent['skills']}")
-        skills.append(agent['skills'])
-        i += 1
-    print(f"{i}. Exit")
 
-    skill = None
-    request_skill = True
-    while request_skill:
-        skill = input(f'Enter the number of the skill you want to use. For exit, enter {len(skills) + 1}: ')
-        if skill == str(len(skills) + 1):
-            exit()
-        elif skill.isdigit() and 1 <= int(skill) <= len(skills):
-            request_skill = False
-        else:
-            print('Invalid number. Please enter a valid number.')
 
-    id_agent = client.get_list_agents()[int(skill) - 1]['id']
-    request_numbers = True
-    while request_numbers:
+def refresh_agents_list(client):
+    print('Fetching list of available agents...')
+    agents = client.get_list_agents()
+    skills = [agent['skills'] for agent in agents]
+    return skills, agents
+
+
+def display_skills(skills):
+    print('Available skills (enter R to refresh): ')
+    for i, skill in enumerate(skills, 1):
+        print(f"{i}. {skill}")
+    print(f"{len(skills) + 1}. Exit")
+
+
+def perform_operation(client, id_agent):
+    while True:
         try:
             num1 = float(input('Enter the first number: '))
             num2 = float(input('Enter the second number: '))
-
-            print('Sending request to the gateway...')
+            print('Sending request to the agent...')
             result = client.send_request_agent(id_agent, {'num1': num1, 'num2': num2})
             print(f"Result: {result}")
-            request_numbers = False
-        except ValueError as e:
+            break
+        except ValueError:
             print('Invalid number. Please enter a valid number.')

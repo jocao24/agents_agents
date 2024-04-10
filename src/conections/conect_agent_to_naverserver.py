@@ -6,8 +6,8 @@ from utils.validate_ip import validate_ip
 
 
 def request_data_agent(name_agent: str):
-    description_agent = input('Enter the description of the agents.py: ')
-    skills = input('Enter the skills of the agents.py separated by commas: ')
+    description_agent = input('Enter the description of the agents_remote_objects.py: ')
+    skills = input('Enter the skills of the agents_remote_objects.py separated by commas: ')
     skills = skills.split(',')
     id_client = str(uuid.uuid4())
 
