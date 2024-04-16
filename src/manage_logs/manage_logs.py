@@ -16,11 +16,14 @@ class ManagementLogs:
         threading.Timer(self.flush_interval, self._flush_buffer).start()
 
     def _flush_buffer(self):
-        """Flushes the current log buffer to persistent storage."""
         with self.lock:
             if self.log_buffer:
                 current_data = self.data_management_instance.load()
-                current_data['logs'] += self.log_buffer
+                # current_data['logs'] += self.log_buffer
+                if 'logs' in current_data:
+                    current_data['logs'] += self.log_buffer
+                else:
+                    current_data['logs'] = self.log_buffer
                 self.data_management_instance.save(current_data)
                 self.log_buffer = ""  # Clear the buffer after saving
         self._start_periodic_flush()  # Reset the timer
@@ -45,6 +48,7 @@ class ManagementLogs:
 
     def get_all_logs(self):
         data = self.data_management_instance.load()
+        print('data', data)
         logs = data['logs'] + self.log_buffer
         return logs
 

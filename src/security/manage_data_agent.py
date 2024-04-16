@@ -33,7 +33,6 @@ class DataManagement:
 
     def load(self) -> AgentType:
         data_from_storage = self.secure_storage.decrypt_data()
-        data_from_storage['logs'] = ''
         data_client: AgentType = AgentType(**data_from_storage)
         return data_client
 

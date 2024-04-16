@@ -30,8 +30,7 @@ class AgentConsumer(BaseAgent):
             return []
 
     def send_request_to_agent(self, id_agent: str, request_data: dict):
-        self.management_security.management_logs.log_message(
-            f"{self.agent_name} -> Sending request to agent {id_agent}")
+        self.management_security.management_logs.log_message(f"{self.agent_name} -> Sending request to agent {id_agent}")
         if id_agent in self.list_agents:
             agent_data = self.list_agents[id_agent]
             public_key = self.management_security.deserialize_public_key(agent_data["public_key"])
@@ -44,13 +43,25 @@ class AgentConsumer(BaseAgent):
                     'ip_agent': get_ip(),
                     'request_data': request_data
                 }
+
+                data_complete = self.management_security.management_data.load()
+
+                request_data = data_complete.get("requests", [])
+                request_data.append(data_send)
+                data_complete["requests"] = request_data
+
                 encrypted_request = self.management_security.encrypt_data_with_public_key(data_send, public_key,
                                                                                           id_agent)
                 encrypted_response = agent_proxy.execute(encrypted_request)
-                print('encrypted_response: ', encrypted_response)
+                print('encrypted_response', encrypted_response)
                 if encrypted_response is not None:
                     response = self.management_security.decrypt_data(encrypted_response)
-                    print('response: ', response)
+
+                    data_response = data_complete.get("responses", [])
+                    data_response.append(response)
+                    data_complete["responses"] = data_response
+                    self.management_security.management_data.save(data_complete)
+
                     self.management_security.management_logs.log_message(
                         f"{self.agent_name} -> Received response from agent {id_agent}")
                     return response

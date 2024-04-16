@@ -14,7 +14,6 @@ class Adder(AgentProvider):
         super().__init__(management_security, "Adder")
 
     def perform_operation(self, data_request):
-        print(f"Data request: {data_request}")
         num1 = float((data_request["num1"]))
         num2 = float(data_request["num2"])
         return num1 + num2

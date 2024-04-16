@@ -83,7 +83,6 @@ class SecurityManagement:
 
     def encrypt_data_with_public_key(self, data: dict, public_key: rsa.RSAPublicKey, id_agent: str):
         self.management_logs.log_message('SecurityManagement -> Encrypting data with hibrid encryption...')
-        self.id_agent = id_agent
         data_bytes = json.dumps(data).encode("utf-8")
         iv = urandom(16)
         shared_key = Fernet.generate_key()
@@ -113,6 +112,7 @@ class SecurityManagement:
             decoded_data = json.loads(decrypted_data.decode())
             return decoded_data
         except Exception as e:
+            print('Error: ', e)
             self.management_logs.log_message(f'SecurityManagement -> Error: {e}')
             return None
 
@@ -284,8 +284,10 @@ class SecurityManagement:
     def set_data_agent(self, data: AgentType):
         self.management_logs.log_message('SecurityManagement -> Setting agent data...')
         self.agent_data = data
+        self.id_agent = data['id']
         self.save_agent_data()
         self.management_logs.log_message('SecurityManagement -> Agent data set successfully')
 
     def get_data_agent(self) -> AgentType:
+        self.id_agent = self.agent_data['id']
         return self.agent_data
