@@ -53,7 +53,6 @@ class AgentConsumer(BaseAgent):
                 encrypted_request = self.management_security.encrypt_data_with_public_key(data_send, public_key,
                                                                                           id_agent)
                 encrypted_response = agent_proxy.execute(encrypted_request)
-                print('encrypted_response', encrypted_response)
                 if encrypted_response is not None:
                     response = self.management_security.decrypt_data(encrypted_response)
 

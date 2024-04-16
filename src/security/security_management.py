@@ -282,7 +282,6 @@ class SecurityManagement:
         self.management_logs.log_message('SecurityManagement -> Agent data deleted successfully')
 
     def set_data_agent(self, data: AgentType):
-        self.management_logs.log_message('SecurityManagement -> Setting agent data...')
         self.agent_data = data
         self.id_agent = data['id']
         self.save_agent_data()

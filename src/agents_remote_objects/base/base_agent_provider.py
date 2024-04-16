@@ -19,23 +19,18 @@ class AgentProvider(BaseAgent):
     @Pyro4.expose
     def execute(self, data: dict):
         try:
-            print('data', data)
             self.management_security.management_logs.log_message(f'{self.agent_name} -> Execute received')
             data_desencrypted = self.management_security.decrypt_data(data)
             self.management_security.management_logs.log_message(f'{self.agent_name} -> Data decrypted')
 
             data_agent_request: RequestAgentType = RequestAgentType(**data_desencrypted)
-            print('data_agent_request', data_agent_request)
             data_request = data_agent_request["request_data"]
 
             data_complete = self.management_security.management_data.load()
-            print('data_complete', data_complete)
 
             request_data = data_complete.get("requests", [])
-            print('request_data', request_data)
             request_data.append(data_request)
             data_complete["requests"] = request_data
-            print('data_complete', data_complete)
 
             result = self.perform_operation(data_request)
 
@@ -49,14 +44,10 @@ class AgentProvider(BaseAgent):
                     "result": result
                 }
             }
-            print('response_data', response_data)
 
             data_response = data_complete.get("responses", [])
-            print('data_response', data_response)
             data_response.append(response_data)
-            print('data_response', data_response)
             data_complete["responses"] = data_response
-            print('data_complete', data_complete)
 
             self.management_security.management_data.save(data_complete)
 

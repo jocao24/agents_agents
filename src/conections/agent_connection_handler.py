@@ -49,10 +49,12 @@ class AgentConnectionHandler:
     def register(self, code_otp: str = ''):
 
         try:
+            print('Registering the agent')
             self.security_management.management_logs.log_message('AgentConnectionHandler -> Registering the agent')
 
             self.security_management.management_logs.log_message('AgentConnectionHandler -> Encrypting the data to pre-register')
             request_data_to_pre_register = self.security_management.encrypt_data_with_shared_key(code_otp)
+            print('Data encrypted to pre-register')
             self.security_management.management_logs.log_message('AgentConnectionHandler -> Data encrypted to pre-register')
 
             self.gateway_proxy._pyroHandshake = request_data_to_pre_register
