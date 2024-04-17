@@ -44,9 +44,12 @@ class AgentMenu:
         if not agents:
             print("No agents available.")
             return
+
+        print(show_separators())
         print("Available Agents:")
         for index, agent in enumerate(agents, start=1):
             print(f"{index}. {agent['name']} ({agent['description']})")
+        print(show_separators())
 
         choice = input("Select an agent to request resources from (or press 'r' to refresh the list): ")
         if choice.lower() == 'r':
@@ -58,7 +61,13 @@ class AgentMenu:
             num1 = float(input("Enter number 1: "))
             num2 = float(input("Enter number 2: "))
             response = self.remote_object.send_request_to_agent(agent_id, {'num1': num1, 'num2': num2})
-            print("Response from agent:", response)
+
+            print(show_separators())
+            print(show_center_text_with_separators("Response from Agent"))
+            print(show_separators())
+            print(f"Request ID: {response['id_request']}")
+            print(f"Result: {response['data_response']['result']}")
+            print(show_separators())
         else:
             print("Invalid option. Please select a valid number.")
 
