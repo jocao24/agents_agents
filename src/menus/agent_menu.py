@@ -92,6 +92,8 @@ class AgentMenu:
         agents = self.remote_object.get_list_agents()
         if agents:
             for agent in agents:
+                if agent['id'] == self.management_security.id_agent:
+                    continue
                 print(f"Agent ID: {agent['id']}, Name: {agent['name']}, Description: {agent['description']}")
         else:
             print("No agents available at the moment.")
