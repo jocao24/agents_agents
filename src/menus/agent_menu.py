@@ -62,6 +62,8 @@ class AgentMenu:
         print(show_separators())
         print("Available Agents:")
         for index, agent in enumerate(agents, start=1):
+            if agent['id'] == self.management_security.id_agent:
+                continue
             print(f"{index}. {agent['name']} ({agent['description']})")
         print(show_separators())
 
