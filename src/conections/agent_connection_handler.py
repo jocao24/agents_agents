@@ -1,5 +1,7 @@
 import threading
-import Pyro4
+import Pyro5.api
+import time
+
 from src.security.security_management import SecurityManagement
 from utils.custom_exception import CustomException
 from utils.errors import ErrorTypes
@@ -15,7 +17,7 @@ class AgentConnectionHandler:
         self.uri = None
         self.security_management = security_management
         self.ip_name_server = self.security_management.get_data_agent()['ip_name_server']
-        self.daemon = Pyro4.Daemon(host=get_ip())
+        self.daemon = Pyro5.api.Daemon(host=get_ip())
         self.remote_object = remote_object
         self.security_management.ns = self.name_server
         self.conect_to_nameserver()
@@ -23,7 +25,8 @@ class AgentConnectionHandler:
 
     def conect_to_nameserver(self):
         self.security_management.management_logs.log_message('AgentConnectionHandler -> Connecting to the NameServer')
-        self.name_server = Pyro4.locateNS(host=self.ip_name_server, port=9090)
+        self.name_server = Pyro5.api.locate_ns(host=self.ip_name_server, port=9090)
+        print(f'NameServer located: {self.name_server}')
         self.security_management.set_ns(self.name_server)
         self.security_management.management_logs.log_message('AgentConnectionHandler -> Connected to the NameServer')
         self.conect_to_gateway()
@@ -39,9 +42,18 @@ class AgentConnectionHandler:
 
     def conect_to_gateway(self):
         self.security_management.management_logs.log_message('AgentConnectionHandler -> Connecting to the Gateway')
-        uri_gateway = self.name_server.lookup("gateway_manager")
-        self.gateway_proxy = Pyro4.Proxy(uri_gateway)
-        self.security_management.management_logs.log_message('AgentConnectionHandler -> Connected to the Gateway')
+        while True:
+            try:
+                self.gateway_proxy = Pyro5.api.Proxy('PYROMETA:gateway_manager')
+                print(f'Gateway located: {self.gateway_proxy}')
+                ping = self.gateway_proxy.ping()
+                print(f'Gateway ping: {ping}')
+                self.security_management.management_logs.log_message('AgentConnectionHandler -> Connected to the Gateway')
+                break
+            except Exception as e:
+                print(f'Error connecting to the Gateway. Trying again in 2 seconds: {str(e)}')
+                self.security_management.management_logs.log_message(f'AgentConnectionHandler -> Error connecting to the Gateway. Trying again in 2 seconds: {str(e)}')
+                time.sleep(2)
 
     def set_ip_name_server(self):
         self.ip_name_server = str(self.name_server).split("@")[1].split(":")[0]

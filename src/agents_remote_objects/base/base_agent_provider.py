@@ -1,4 +1,4 @@
-import Pyro4
+import Pyro5.api
 from src.agents_remote_objects.base.agent_base import BaseAgent
 from src.security.security_management import SecurityManagement
 from utils.types.agent_type import RequestAgentType, ResponseAgentType
@@ -16,7 +16,7 @@ class AgentProvider(BaseAgent):
     def perform_operation(self, data_request):
         raise NotImplementedError("This method should be overridden by subclasses")
 
-    @Pyro4.expose
+    @Pyro5.api.expose
     def execute(self, data: dict):
         try:
             self.management_security.management_logs.log_message(f'{self.agent_name} -> Execute received')

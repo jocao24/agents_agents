@@ -1,13 +1,13 @@
 import uuid
 
-import Pyro4
+import Pyro5.api
 from src.agents_remote_objects.base.agent_base import BaseAgent
 from src.security.security_management import SecurityManagement
 from utils.get_ip import get_ip
 from utils.types.agent_type import RequestAgentType
 
 
-@Pyro4.expose
+@Pyro5.api.expose
 class AgentConsumer(BaseAgent):
     def __init__(self, management_security: SecurityManagement, agent_name: str):
         super().__init__(management_security, agent_name)

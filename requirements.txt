@@ -1,4 +1,4 @@
-Pyro4==4.82
+Pyro5==5.11
 typing==3.7.4.3
 typing_extensions~=4.10.0
 cryptography~=42.0.5

@@ -1,8 +1,8 @@
-import Pyro4
+import Pyro5.api
 from src.security.security_management import SecurityManagement
 
 
-@Pyro4.expose
+@Pyro5.api.expose
 class BaseAgent:
     def __init__(self, management_security: SecurityManagement, agent_name: str):
         self.management_security = management_security
