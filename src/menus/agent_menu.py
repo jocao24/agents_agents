@@ -35,8 +35,6 @@ class AgentMenu:
         data_agent = self.management_security.get_data_agent()
         requests = data_agent.get('requests', [])
         responses = data_agent.get('responses', [])
-        print('requests', requests)
-        print('responses', responses)
 
         if not requests:
             print("No requests to display.")
