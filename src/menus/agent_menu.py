@@ -33,24 +33,31 @@ class AgentMenu:
     def view_requests_and_responses(self):
         """View requests made by this agent and their responses if it's a consumer."""
         data_agent = self.management_security.get_data_agent()
-        if data_agent.get('is_consumer', False):
-            requests = data_agent.get('requests', [])
-            responses = data_agent.get('responses', [])
+        requests = data_agent.get('requests', [])
+        responses = data_agent.get('responses', [])
+        print('requests', requests)
+        print('responses', responses)
 
-            if requests:
-                print(show_separators())
-                print(show_center_text_with_separators("Requests and Responses Summary"))
-                print(show_separators())
-                for request in requests:
-                    response = next((resp for resp in responses if resp['id_request'] == request['id_request']), None)
-                    request_details = ', '.join([f"{k}: {v}" for k, v in request['request_data'].items()])
-                    result = response['data_response']['result'] if response else 'No response yet'
-                    print(f"Request ID: {request['id_request']} | Data: {request_details} | Result: {result}")
-                print(show_separators())
-            else:
-                print("No requests to display.")
-        else:
-            print("This agent is not configured as a consumer.")
+        if not requests:
+            print("No requests to display.")
+            return
+
+        print(show_separators())
+        print(show_center_text_with_separators("Requests and Responses Summary"))
+        print(show_separators())
+
+        for request in requests:
+            # Obtén la respuesta correspondiente al ID de solicitud
+            response = next((resp for resp in responses if resp['id_request'] == request['id_request']), None)
+
+            # Prepara detalles de la solicitud
+            request_details = ', '.join([f"{k}: {v}" for k, v in request.items() if k != 'id_request'])
+            result = response['data_response']['result'] if response and 'data_response' in response and 'result' in \
+                                                            response['data_response'] else 'No response yet'
+
+            print(f"Request ID: {request['id_request']} | Data: {request_details} | Result: {result}")
+
+        print(show_separators())
 
     def request_resources(self):
         """Allow a consumer agent to request resources from other agents."""

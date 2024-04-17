@@ -5,6 +5,7 @@ from src.security.security_management import SecurityManagement
 
 
 class RequestAdderType(TypedDict):
+    id_request: str
     num1: int
     num2: int
 

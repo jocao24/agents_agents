@@ -25,6 +25,7 @@ class AgentProvider(BaseAgent):
 
             data_agent_request: RequestAgentType = RequestAgentType(**data_desencrypted)
             data_request = data_agent_request["request_data"]
+            data_request["id_request"] = data_agent_request["id_request"]
 
             data_complete = self.management_security.management_data.load()
 
