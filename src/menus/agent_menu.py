@@ -17,10 +17,13 @@ class AgentMenu:
     def view_agent_data(self):
         """Display the current state and data of the agent."""
         data_agent = self.management_security.get_data_agent()
+        del data_agent['ultimate_shared_key']
+        del data_agent['logs']
+        del data_agent['requests']
+        del data_agent['responses']
         print("Agent Data:")
         for key, value in data_agent.items():
-            if key != 'logs' or key != 'requests' or key != 'responses':
-                print(f"{key}: {value}")
+            print(f"{key}: {value}")
 
     def exit_menu(self):
         """Exit the menu."""
