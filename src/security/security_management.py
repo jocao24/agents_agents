@@ -288,5 +288,6 @@ class SecurityManagement:
         self.management_logs.log_message('SecurityManagement -> Agent data set successfully')
 
     def get_data_agent(self) -> AgentType:
+        self.upload_agent_data()
         self.id_agent = self.agent_data['id']
         return self.agent_data
