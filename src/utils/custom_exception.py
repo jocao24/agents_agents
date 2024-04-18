@@ -1,4 +1,4 @@
-from .errors import ErrorTypes
+from src.utils.errors import ErrorTypes
 
 
 class CustomException(Exception):

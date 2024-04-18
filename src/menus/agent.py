@@ -8,7 +8,7 @@ from src.conections.agent_connection_handler import AgentConnectionHandler
 from src.conections.agent_networking import request_data_agent, request_ip
 from src.menus.agent_menu import AgentMenu
 from src.security.security_management import SecurityManagement
-from utils.errors import ErrorTypes
+from src.utils import ErrorTypes
 
 
 class RegisterAgentType(TypedDict):

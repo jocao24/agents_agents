@@ -9,8 +9,8 @@ from cryptography.hazmat.primitives.asymmetric import padding, rsa
 from cryptography.hazmat.primitives.ciphers import Cipher, modes, algorithms
 
 from src.manage_logs.manage_logs import ManagementLogs
-from utils.get_ip import get_ip
-from utils.types.agent_type import AgentType
+from src.utils.get_ip import get_ip
+from src.utils.types import AgentType
 
 
 class SecurityManagement:
@@ -248,6 +248,7 @@ class SecurityManagement:
         shared_key = self.agent_data['ultimate_shared_key']
         key_shared_complete = (ip + code_otp + self.id_agent + code_otp + shared_key + ip + self.id_agent + shared_key +
                                code_otp)
+        print('key_shared_complete: ', key_shared_complete)
         self.shared_key_cifrate_yp = self.__hash_key_shared(key_shared_complete)
         self.management_logs.log_message('SecurityManagement -> Shared key yp set successfully')
 

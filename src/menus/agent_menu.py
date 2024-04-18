@@ -1,5 +1,5 @@
 from src.security.security_management import SecurityManagement
-from utils.separators import show_separators, show_center_text_with_separators
+from src.utils.separators import show_separators, show_center_text_with_separators
 
 
 class AgentMenu:
