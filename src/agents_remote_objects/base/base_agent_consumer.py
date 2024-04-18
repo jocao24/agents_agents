@@ -1,10 +1,10 @@
 import uuid
 
 import Pyro4
-from src.agents_remote_objects.base.agent_base import BaseAgent
-from src.security.security_management import SecurityManagement
-from src.utils.get_ip import get_ip
-from src.utils.types import RequestAgentType
+from .agent_base import BaseAgent
+from ...security.security_management import SecurityManagement
+from ...utils.get_ip import get_ip
+from ...utils.types.agent_type import RequestAgentType
 
 
 @Pyro4.expose

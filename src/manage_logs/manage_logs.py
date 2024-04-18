@@ -1,6 +1,6 @@
 import datetime
 import threading
-from src.security.manage_data_agent import DataManagement
+from ..security.manage_data_agent import DataManagement
 
 
 class ManagementLogs:

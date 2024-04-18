@@ -1,8 +1,7 @@
-from src.agents_remote_objects.base.base_agent_consumer import AgentConsumer
 import Pyro4
-
-from src.menus.agent import execute_agent
-from src.security.security_management import SecurityManagement
+from .base.base_agent_consumer import AgentConsumer
+from ..menus.agent import execute_agent
+from ..security.security_management import SecurityManagement
 
 
 @Pyro4.expose

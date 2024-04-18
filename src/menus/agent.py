@@ -4,11 +4,11 @@ import threading
 import time
 
 from typing_extensions import Any, TypedDict
-from src.conections.agent_connection_handler import AgentConnectionHandler
-from src.conections.agent_networking import request_data_agent, request_ip
-from src.menus.agent_menu import AgentMenu
-from src.security.security_management import SecurityManagement
-from src.utils import ErrorTypes
+from ..conections.agent_connection_handler import AgentConnectionHandler
+from ..conections.agent_networking import request_data_agent, request_ip
+from ..menus.agent_menu import AgentMenu
+from ..security.security_management import SecurityManagement
+from ..utils.errors import ErrorTypes
 
 
 class RegisterAgentType(TypedDict):

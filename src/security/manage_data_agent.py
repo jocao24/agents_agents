@@ -1,7 +1,7 @@
-from src.utils import get_system_uuid
-from src.utils.types import AgentType
 import os
-from src.security.secure_storage import SecureStorage
+from ..utils.get_system_uuid import get_system_uuid
+from ..utils.types.agent_type import AgentType
+from ..security.secure_storage import SecureStorage
 
 
 class DataManagement:

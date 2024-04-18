@@ -1,5 +1,5 @@
 import Pyro4
-from src.security.security_management import SecurityManagement
+from ...security.security_management import SecurityManagement
 
 
 @Pyro4.expose

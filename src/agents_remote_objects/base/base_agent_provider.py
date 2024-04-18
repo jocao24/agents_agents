@@ -1,7 +1,7 @@
 import Pyro4
-from src.agents_remote_objects.base.agent_base import BaseAgent
-from src.security.security_management import SecurityManagement
-from src.utils.types import RequestAgentType, ResponseAgentType
+from ...security.security_management import SecurityManagement
+from .agent_base import BaseAgent
+from ...utils.types.agent_type import RequestAgentType, ResponseAgentType
 
 
 class AgentProvider(BaseAgent):
