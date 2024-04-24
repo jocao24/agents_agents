@@ -19,8 +19,10 @@ class AgentMenu:
         data_agent = self.management_security.get_data_agent()
         del data_agent['ultimate_shared_key']
         del data_agent['logs']
-        del data_agent['requests']
-        del data_agent['responses']
+        if 'requests' in data_agent:
+            del data_agent['requests']
+        if 'responses' in data_agent:
+            del data_agent['responses']
         print("Agent Data:")
         for key, value in data_agent.items():
             print(f"{key}: {value}")

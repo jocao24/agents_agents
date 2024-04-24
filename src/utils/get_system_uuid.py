@@ -1,6 +1,6 @@
 import subprocess
 import platform
-
+import re
 
 def get_system_uuid():
     operating_system = platform.system()
