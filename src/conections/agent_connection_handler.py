@@ -59,7 +59,7 @@ class AgentConnectionHandler:
             request_data_to_pre_register = self.security_management.encrypt_data_with_shared_key(code_otp)
             end_time = time.perf_counter()
             encryption_time = end_time - start_time
-            self.security_management.management_logs.log_message(f'AgentConnectionHandler -> Data encrypted to pre-register: {self._shorten_string(request_data_to_pre_register['data'])} (Time: {encryption_time:.6f} seconds)')
+            self.security_management.management_logs.log_message(f'AgentConnectionHandler -> Data encrypted to pre-register: {self._shorten_string(request_data_to_pre_register["data"])} (Time: {encryption_time:.6f} seconds)')
 
             print('Data encrypted to pre-register')
             self.gateway_proxy._pyroHandshake = request_data_to_pre_register
@@ -69,7 +69,7 @@ class AgentConnectionHandler:
             response = self.gateway_proxy.register(self.security_management.id_agent)
             end_time = time.perf_counter()
             preregistration_time = end_time - start_time
-            self.security_management.management_logs.log_message(f'AgentConnectionHandler -> Agent pre-registered: {self._shorten_string(response['data'])} (Time: {preregistration_time:.6f} seconds)')
+            self.security_management.management_logs.log_message(f'AgentConnectionHandler -> Agent pre-registered: {self._shorten_string(response["data"])} (Time: {preregistration_time:.6f} seconds)')
 
             start_time = time.perf_counter()
             self.security_management.management_logs.log_message('AgentConnectionHandler -> Decrypting the data responded by the Yellow Page')
@@ -88,7 +88,7 @@ class AgentConnectionHandler:
             self.security_management.server.register_agent(self._shorten_string(data_encrypted))
             end_time = time.perf_counter()
             registration_encryption_time = end_time - start_time
-            self.security_management.management_logs.log_message(f'AgentConnectionHandler -> Data encrypted to register {self._shorten_string(data_encrypted['data'])} (Time: {registration_encryption_time:.6f} seconds)')
+            self.security_management.management_logs.log_message(f'AgentConnectionHandler -> Data encrypted to register {self._shorten_string(data_encrypted["data"])} (Time: {registration_encryption_time:.6f} seconds)')
 
             self.security_management.management_logs.log_message('AgentConnectionHandler -> Registering the agent. Delivering its capabilities, features, description, functions, etc. ')
             self.name_server.register(f'{self.security_management.id_agent}', self.get_uri_agent(self.remote_object))
