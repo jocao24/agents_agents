@@ -1,0 +1,223 @@
+----------------------------- FIRST STEP - THE AGENT ENCRYPTS THE DATA TO BE SENT -----------------------------
+2024-07-07T10:03:14.410200 - SecurityManagement -> SecurityManagement initialized
+2024-07-07T10:03:14.410200 - Adder -> Initialized
+2024-07-07T10:03:14.411200 - Adder -> Adder initialized
+2024-07-07T10:03:14.411200 - SecurityManagement -> Uploading agent data...
+2024-07-07T10:03:14.484455 - SecurityManagement -> Agent data uploaded successfully
+2024-07-07T10:03:14.484455 - SecurityManagement -> Uploading agent data...
+2024-07-07T10:03:14.565676 - SecurityManagement -> Agent data uploaded successfully
+2024-07-07T10:03:14.573202 - AgentConnectionHandler -> Connecting to the NameServer
+2024-07-07T10:03:14.573202 - AgentConnectionHandler -> Connected to the NameServer
+2024-07-07T10:03:14.573202 - AgentConnectionHandler -> Connecting to the Gateway
+2024-07-07T10:03:14.574207 - AgentConnectionHandler -> Connected to the Gateway
+2024-07-07T10:03:14.574207 - AgentConnectionHandler -> AgentConnectionHandler initialized
+2024-07-07T10:03:14.574207 - AgentConnectionHandler -> Registering the agent
+2024-07-07T10:03:14.574207 - AgentConnectionHandler -> Encrypting the data to pre-register
+2024-07-07T10:03:14.574207 - SecurityManagement -> Encrypting data yp...
+2024-07-07T10:03:14.574207 - SecurityManagement -> Setting shared key yp...
+2024-07-07T10:03:14.574207 - SecurityManagement -> Hashing shared key...
+2024-07-07T10:03:14.574207 - SecurityManagement -> Shared key hashed successfully
+2024-07-07T10:03:14.574207 - SecurityManagement -> Shared key yp set successfully
+2024-07-07T10:03:14.574207 - SecurityManagement -> Data encrypted yp successfully
+2024-07-07T10:03:14.574207 - SecurityManagement -> Encoding data yp...
+2024-07-07T10:03:14.574207 - SecurityManagement -> Data encoded yp successfully
+2024-07-07T10:03:14.574207 - SecurityManagement -> Encrypting data deamon...
+2024-07-07T10:03:14.574207 - SecurityManagement -> Setting shared key deamon...
+2024-07-07T10:03:14.574207 - SecurityManagement -> Hashing shared key...
+2024-07-07T10:03:14.574207 - SecurityManagement -> Shared key hashed successfully
+2024-07-07T10:03:14.574207 - SecurityManagement -> Shared key deamon set successfully
+2024-07-07T10:03:14.574207 - SecurityManagement -> Data encrypted deamon successfully
+2024-07-07T10:03:14.574207 - SecurityManagement -> Encoding data deamon...
+2024-07-07T10:03:14.574207 - SecurityManagement -> Data encoded deamon successfully
+2024-07-07T10:03:14.574207 - AgentConnectionHandler -> Data encrypted to pre-register: dRaXS...5WA== (Time: 0.000591 seconds)
+2024-07-07T10:03:14.574207 - AgentConnectionHandler -> Pre-registering the agent
+2024-07-07T10:03:14.576208 - AgentConnectionHandler -> Error: connection to ('192.168.1.11', 9091) rejected: ip_blocked: Your IP has been blocked for multiple unsuccessful attempts. (Time: 0.001967 seconds)
+2024-07-07T10:04:49.623844 - SecurityManagement -> Generating private key...
+2024-07-07T10:04:49.715777 - SecurityManagement -> Private key generated successfully
+2024-07-07T10:04:49.715777 - SecurityManagement -> Generating public key...
+2024-07-07T10:04:49.715777 - SecurityManagement -> Public key generated successfully
+2024-07-07T10:04:49.715777 - SecurityManagement -> Uploading agent data...
+2024-07-07T10:04:49.799588 - SecurityManagement -> Agent data uploaded successfully
+
+===== New Session Started =====
+2024-07-07T10:04:49.799588 - SecurityManagement -> SecurityManagement initialized
+2024-07-07T10:04:49.799588 - Adder -> Initialized
+2024-07-07T10:04:49.799588 - Adder -> Adder initialized
+2024-07-07T10:04:49.799588 - SecurityManagement -> Uploading agent data...
+2024-07-07T10:04:49.878322 - SecurityManagement -> Agent data uploaded successfully
+2024-07-07T10:04:49.878322 - SecurityManagement -> Uploading agent data...
+2024-07-07T10:04:49.950968 - SecurityManagement -> Agent data uploaded successfully
+2024-07-07T10:04:49.958042 - AgentConnectionHandler -> Connecting to the NameServer
+2024-07-07T10:04:49.958042 - AgentConnectionHandler -> Connected to the NameServer
+2024-07-07T10:04:49.958042 - AgentConnectionHandler -> Connecting to the Gateway
+2024-07-07T10:04:49.959503 - AgentConnectionHandler -> Connected to the Gateway
+2024-07-07T10:04:49.959503 - AgentConnectionHandler -> AgentConnectionHandler initialized
+2024-07-07T10:04:49.959503 - AgentConnectionHandler -> Registering the agent
+2024-07-07T10:04:49.959503 - AgentConnectionHandler -> Encrypting the data to pre-register
+2024-07-07T10:04:49.959503 - SecurityManagement -> Encrypting data yp...
+2024-07-07T10:04:49.959503 - SecurityManagement -> Setting shared key yp...
+2024-07-07T10:04:49.959503 - SecurityManagement -> Hashing shared key...
+2024-07-07T10:04:49.959503 - SecurityManagement -> Shared key hashed successfully
+2024-07-07T10:04:49.959503 - SecurityManagement -> Shared key yp set successfully
+2024-07-07T10:04:49.959503 - SecurityManagement -> Data encrypted yp successfully
+2024-07-07T10:04:49.959503 - SecurityManagement -> Encoding data yp...
+2024-07-07T10:04:49.959503 - SecurityManagement -> Data encoded yp successfully
+2024-07-07T10:04:49.959503 - SecurityManagement -> Encrypting data deamon...
+2024-07-07T10:04:49.959503 - SecurityManagement -> Setting shared key deamon...
+2024-07-07T10:04:49.959503 - SecurityManagement -> Hashing shared key...
+2024-07-07T10:04:49.959503 - SecurityManagement -> Shared key hashed successfully
+2024-07-07T10:04:49.959503 - SecurityManagement -> Shared key deamon set successfully
+2024-07-07T10:04:49.959503 - SecurityManagement -> Data encrypted deamon successfully
+2024-07-07T10:04:49.959503 - SecurityManagement -> Encoding data deamon...
+2024-07-07T10:04:49.959503 - SecurityManagement -> Data encoded deamon successfully
+2024-07-07T10:04:49.959503 - AgentConnectionHandler -> Data encrypted to pre-register: FiqxA...asw== (Time: 0.000594 seconds)
+2024-07-07T10:04:49.959503 - AgentConnectionHandler -> Pre-registering the agent
+2024-07-07T10:04:49.961590 - AgentConnectionHandler -> Error: connection to ('192.168.1.11', 9091) rejected: otp_required: An OTP code is required to authenticate to the GatewayManager. (Time: 0.002016 seconds)
+2024-07-07T10:06:07.136401 - AgentConnectionHandler -> Registering the agent
+2024-07-07T10:06:07.136401 - AgentConnectionHandler -> Encrypting the data to pre-register
+2024-07-07T10:06:07.136401 - SecurityManagement -> Encrypting data yp...
+2024-07-07T10:06:07.136401 - SecurityManagement -> Setting shared key yp...
+2024-07-07T10:06:07.136401 - SecurityManagement -> Hashing shared key...
+2024-07-07T10:06:07.136401 - SecurityManagement -> Shared key hashed successfully
+2024-07-07T10:06:07.136401 - SecurityManagement -> Shared key yp set successfully
+2024-07-07T10:06:07.136401 - SecurityManagement -> Data encrypted yp successfully
+2024-07-07T10:06:07.136401 - SecurityManagement -> Encoding data yp...
+2024-07-07T10:06:07.136401 - SecurityManagement -> Data encoded yp successfully
+2024-07-07T10:06:07.136401 - SecurityManagement -> Encrypting data deamon...
+2024-07-07T10:06:07.136401 - SecurityManagement -> Setting shared key deamon...
+2024-07-07T10:06:07.136401 - SecurityManagement -> Hashing shared key...
+2024-07-07T10:06:07.136401 - SecurityManagement -> Shared key hashed successfully
+2024-07-07T10:06:07.136401 - SecurityManagement -> Shared key deamon set successfully
+2024-07-07T10:06:07.136401 - SecurityManagement -> Data encrypted deamon successfully
+2024-07-07T10:06:07.136401 - SecurityManagement -> Encoding data deamon...
+2024-07-07T10:06:07.136401 - SecurityManagement -> Data encoded deamon successfully
+2024-07-07T10:06:07.136401 - AgentConnectionHandler -> Data encrypted to pre-register: xr6Sd...8tw== (Time: 0.000560 seconds)
+2024-07-07T10:06:07.136401 - AgentConnectionHandler -> Pre-registering the agent
+
+----------------------------- SECOND STEP - THE NS DEAMON INTERCEPTS THE REQUEST AND PROCEEDS TO DECRYPT THE DATA -----------------------------
+22024-07-07T10:01:37.240420 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Request: {'id': 'ef4d32d9-c04a-42d5-8a91-24fff169d0cb', 'iv': 'tOp9XfH9RQauJUlGF7yeuA==', 'data': 'lfjLpnnnFX6HQk0cyz6+lp2RuBeNX00NnZgQA1g1twW5tcbexsNfYed8EirX0EFlB8iBakiCp/6A7Ovk1pEtLFKzEn41gXG0TfH+KnL1YoHEUhvRELmR3xuxjPbn5r74b7FUVNWD2I1QyD36XDEdUEw0XHf/xcdsErO74E9iqxWIJh3iFO11X7G3iBd8HsukberwFeTKbmZC6uWoX01G84kS1u+FsfW832JHYSswpZEo7qTbURuyrbLSaHx3S03kVsjHVRvR2GuuQbhVYwSL5FBZCIaei7k/uK1abg1eTxQSxGO7G09K+cgD/ttJyAh89eXa3Xfw4ZYtrbgvIyuVq3OzWNQo/jUY0Bz/V9ryEUL71BOas3OH70eDouvZxSpHbjWA22dkv0Ou8sr2Kqtx6HRhNWewt0+0/kCmHxZ2tpn47YdCWRzUo9S1Z+hROiaCC8M6SAXWJlW+sUVbD31vI0CYEAua8Txx71BFtTvjB6u8yU6jItLChf/dfT+vTOmPkRFJ3GQckJS81W4sHeXeA3Ei/s2h8uoDc5Xfk9AIbJeI2Mfu2Kpck9nSRcAUjlSK+XtMFXsVmEOx6I9x9mCHM5zah0+MEsntI7hVzSHxzcr4O5ZIkHjuG+Zj9PIJkMgNGqIeewOzcW05N1MDosbSqO4KakSq2sgnbcs5uXoQn0OX8jCCX8XtBdslOeTYbulTOtyddSxzSytHr4iN40ZCp+3KSNpLGl9eEPW5xPDToWfviUckEOgTuxMWbhLR/76gCYcXigkYtjRoYDfXS2l4cgkmi+D4Y1Pk84DQYjmCYZTuigVZJlvn0N3iggZdzD5nfB1N3eAGMqalwaU/QtHaFZ9o2IQQXa9jeR0zOFS5FBDARDszvcvh4L/fsjBAF5yeFXzbK1GslpkdTNcXRxOK1c4uBistDdYLgnfuHDsnJQ/nsrVgQQf6QVAfJYXrKX+eDkWgsw=='}
+2024-07-07T10:01:37.240420 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Connection: <Pyro4.socketutil.SocketConnection object at 0x0000018B1781BF50>   
+2024-07-07T10:01:37.240420 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Verifying if the yellow_page is connected and Validating the request
+2024-07-07T10:01:37.241419 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> The yellow_page is connected with the IP: 192.168.1.11
+2024-07-07T10:01:37.241419 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Request data is valid and Yellow Page is connected
+2024-07-07T10:01:37.241419 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Checking IP status
+2024-07-07T10:01:37.241419 - IPManager -> Checking the status of the IP 192.168.1.11
+2024-07-07T10:01:37.241419 - IPManager -> The IP 192.168.1.11 is blacklisted.
+2024-07-07T10:01:37.241419 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> The IP 192.168.1.11 is in the blacklist.
+2024-07-07T10:01:37.241419 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Error: ip_blocked: Your IP has been blocked for multiple unsuccessful attempts.
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Validating handshake request
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Request: {'id': 'ef4d32d9-c04a-42d5-8a91-24fff169d0cb', 'iv': 'LNH1ms7Vf3/TP398CEEIbw==', 'data': 'xr6SdQslyNJK5Pa+jBR/7lxV8K2WC+mim0f/A9nz8mOAk/0BbbcPHZNi0/dob89BmleDd1LMOJA93XlUaMNP6WZrexg/OaFLyydxbb6ZwDa0jx4TO0e/NKLvTNP4k1pxuyxYy209WCR2zzE9Mx5PkyBcWyW8wSAyqrP6wIb5fGLfeGUQGJyw1Lw+Q8CTW/tBLJ4UInBeqS3iR1meDtrtO3uIijS1CAimAexFHFGR6LLjM0I9TaL4o0ufKL/deiJf5tXdhPH/SQFU7Qf5ECcTCDRZnYWRWgoDW/EggdlUqQcG0aDdqnhAkl0pfAXZ7NIMSVXjpyvP0yxRM6+cdG5w46MSHp2R0FDpHbRN/4Ohazz+2XSilbvmP/DXFZe6m3Fm07gdEMfiVzlPZOCwSm+dvFyYhS2119Q7sPeggjtoT64uH96/q9iRcJDQ5VtbqEmK1FStuAeUxe62BW6MuynDXNiC38miukyaLfbOKii2djlhrO50FBuqAeA6YNwfoK+RhjsSQ+mzZ6kQ4KfUXY/RMYgH9Ptc7Elm5V/JwVenDx35GsLjlVpzxRuyZqURvx6VOfRF8CQvwTejd+9NyZcNn0SIKb3+O85x94ZHk2iiAksDBQZ6Avc39ICUR8e69wyo/KlWlD2bKmKucJb08ya0juyuFzYda/nAUtViGRZbcjHKnzuoxKTmkAaYDWvT8gmeAycxkvefCe1RABAMQDWsBk8jHQcEfbwmTs1U/tOIlgQ/Y39Shl11NxXdOiTeTUN3eDcROmtt54f35jKS++KdwbnlM+wbeqQovfiXKh2+f8mgdfkXN/gLS0VnBOPoSYjsNeb5w/1DuMWMxB2UbT+7DJYGp3+RcMDCslcDBgCXtrGfOvokZi7R2RIrBWqoOa+l6YrB5REqhs0eH+r87Pvdh9JE3hzP6mWLmMwP+9gRxA/WcauXo8nv72+pHPGB3eucoIjiBZ1tFR98tw=='}
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Connection: <Pyro4.socketutil.SocketConnection object at 0x0000018C73580740>   
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Verifying if the yellow_page is connected and Validating the request
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> The yellow_page is connected with the IP: 192.168.1.11
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Request data is valid and Yellow Page is connected
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Checking IP status
+2024-07-07T10:06:07.137401 - IPManager -> Checking the status of the IP 192.168.1.11
+2024-07-07T10:06:07.137401 - IPManager -> The IP 192.168.1.11 has no specific access status.
+2024-07-07T10:06:07.137401 - Deamon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Decrypting data ... {'id': 'ef4d32d9-c04a-42d5-8a91-24fff169d0cb', 'iv': 'LNH1ms7Vf3/TP398CEEIbw==', 'data': 'xr6SdQslyNJK5Pa+jBR/7lxV8K2WC+mim0f/A9nz8mOAk/0BbbcPHZNi0/dob89BmleDd1LMOJA93XlUaMNP6WZrexg/OaFLyydxbb6ZwDa0jx4TO0e/NKLvTNP4k1pxuyxYy209WCR2zzE9Mx5PkyBcWyW8wSAyqrP6wIb5fGLfeGUQGJyw1Lw+Q8CTW/tBLJ4UInBeqS3iR1meDtrtO3uIijS1CAimAexFHFGR6LLjM0I9TaL4o0ufKL/deiJf5tXdhPH/SQFU7Qf5ECcTCDRZnYWRWgoDW/EggdlUqQcG0aDdqnhAkl0pfAXZ7NIMSVXjpyvP0yxRM6+cdG5w46MSHp2R0FDpHbRN/4Ohazz+2XSilbvmP/DXFZe6m3Fm07gdEMfiVzlPZOCwSm+dvFyYhS2119Q7sPeggjtoT64uH96/q9iRcJDQ5VtbqEmK1FStuAeUxe62BW6MuynDXNiC38miukyaLfbOKii2djlhrO50FBuqAeA6YNwfoK+RhjsSQ+mzZ6kQ4KfUXY/RMYgH9Ptc7Elm5V/JwVenDx35GsLjlVpzxRuyZqURvx6VOfRF8CQvwTejd+9NyZcNn0SIKb3+O85x94ZHk2iiAksDBQZ6Avc39ICUR8e69wyo/KlWlD2bKmKucJb08ya0juyuFzYda/nAUtViGRZbcjHKnzuoxKTmkAaYDWvT8gmeAycxkvefCe1RABAMQDWsBk8jHQcEfbwmTs1U/tOIlgQ/Y39Shl11NxXdOiTeTUN3eDcROmtt54f35jKS++KdwbnlM+wbeqQovfiXKh2+f8mgdfkXN/gLS0VnBOPoSYjsNeb5w/1DuMWMxB2UbT+7DJYGp3+RcMDCslcDBgCXtrGfOvokZi7R2RIrBWqoOa+l6YrB5REqhs0eH+r87Pvdh9JE3hzP6mWLmMwP+9gRxA/WcauXo8nv72+pHPGB3eucoIjiBZ1tFR98tw=='}
+2024-07-07T10:06:07.137401 - Deamon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Data decrypted: {'code_otp': '461553', 'data_cifrated_yp': {'iv': 'fLaxKotsyXvPZUaClaOjCA==', 'data': 'flJ0BgoZ7Ymyi+I+jXj8hExKP8+cdwCEBhf1gfz8ii3awAWHxC+mRng8yQfltH4wOqBSJEdDVE9RApeTpN4fnnnSd1wcWFTpMKSTIw5UUE7FquvDckicG892uvuC1WkDWWDLruWwPShNU6NRUZBrViHitF9IUbvodROUKxHqNh7WK8oi1TJk9DAfhDJC3mATdnBedPzHOHFWUmYU+YcmyPuDHEXpwz2RjRt8zXmu162FWQrmFuy15gZQrzUeSw3EB0bQNYT7AsQ6hxcMDvPvyFF1N1XXh2/sK0ShuMLrkotSAJ551VsB0zqsKLZWRGoBhyFHVhr6AF6c329tZpdLn5E3TwrWDdw4kymCWlE3XED04b7VrG99KMFLBxlqyAYnxTgayTL3o+CRKVyK9LMEyc7FG9nbxxmkccNpPJQ4ss3n24CIcg3AHbmllQmEGI5VLlj+kSwkHoH5YXM+9WN2uBWL1yrurwti6FmcS2uJuY1sjXEEKfQoYFsV+kmVonBgOmC5Xa+wwDA4aQ45ih6GzCxglF48qYeNv5yzeRnUmarDQDBVOMomGDJaStKlJLIvLZtZ9PKSYMuSI+joEBUBb3etU6uq4WuXSb7uX3ntMRW9XvEGmHrAgsmHoI/vRg=='}}
+2024-07-07T10:06:07.137401 - Deamon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> IP status: None
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> IP is not in the whitelist
+2024-07-07T10:06:07.137401 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Authenticating ...
+2024-07-07T10:06:07.137401 - AccessCoordinator -> Authenticating IP: 192.168.1.11
+2024-07-07T10:06:07.137401 - TOTPManager -> Verifying TOTP...
+2024-07-07T10:06:07.138401 - TOTPManager -> TOTP verified: True
+2024-07-07T10:06:07.138401 - IPManager -> Adding IP 192.168.1.11 to the whitelist
+2024-07-07T10:06:07.138401 - IPManager -> The IP 192.168.1.11 has been added to the whitelist.
+2024-07-07T10:06:07.138401 - IPManager -> Saving the data.
+2024-07-07T10:06:07.212589 - IPManager -> Data saved successfully.
+2024-07-07T10:06:07.212589 - AccessCoordinator -> The IP 192.168.1.11 has been added to the whitelist.
+2024-07-07T10:06:07.212589 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> IP authenticated
+2024-07-07T10:06:07.212589 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Registering entity ...
+2024-07-07T10:06:07.212589 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Encrypting data ...
+2024-07-07T10:06:07.212589 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Data encrypted M+wnkDdG+VychQhT8eUlvbdKYZd3Mqlo+bpHB/IocUware5lsTx0chLij9LsnT23OMG670XEIGAqWNrFE+cxE+13UbQWqlzKgcGAUjepXd0rCIA4foSMXEuBCAS45ZdD5sQOsn3pIRYCkN09xGqzGK94yEVAKTqDkpgT2gtx6a+OvQ2hxzM4tr5amM7CMaf8a/cfhbIZeC+nZjw4BJvnKoHuNF8QAghyWY2g03Sf1+TBj7B0dyvVEkQRiwBzb+J8oK8PtEy9vbj1ZCxfXxc6V20vO1DBycMULQxBo796Kfvi5dcH5Jf0a7raPi1bJmE6PLTUeJ7huhEeBoIfvSw1EMRNmcQ1bTicd/Suv6R0KyIm7DfXou349x1P+AH6gjz1sglOimaHKX+qi3c4GgCPN5fn79dBC14dtXICCRg5vkUWGCM2HUPGqmY+sabc1Wvb4X1L6Wpz78hZ5Sj1v0D/JEAmjZprUtBhRIB6pKBOSgsGy1WOmmOBj/SgO5ljGgQXwCDqXDujBreTq1LyKNEfSbo90p1SULyN0+S1LDmp8HLZTyE6bvj0EpnZ5doSSEOCM+6q900CQC7Y7c/BMpCKPQF9TgSZenA4x6D01U9JFJQ3l0t1amYU0rt2DyQL15pHcw+nA76qAq9nwt7V/RJPKzOt8+27Ps0QpXJ/8GJotocFMUI6iuM/i8Jln1/qysCbasf+mI3r2BU4c11VXgC2VNmviwoZ14mejHGEk1eQIrvPfC3AClAeaw+5s3O1MOkciXXJ58H7QbWgH1Akkk5u3HYI2glul32XAiSdWPmC0iYDFHSZXd4rLukPmSp8l1TZPOY8ZUYLhUIx8N18zI3YkIrSaDRvv7HL8bQSFINhEgRwSl2wtZNaXq49kEDLlXoGAlZ4dpsya8npZFhyp3dg4pdDfQ+7zqbZ8+mu5WpYOjzyVfSdp8j2N51ee/Ym5FvGUtU4FtxYZh/VEjoUh8jsG2bKgh7EQYC/49OZpFVSotaaIxob    
+2024-07-07T10:06:07.212589 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Sending data to the yellow_page ...
+
+----------------------------- THIRD STEP - IF IT PASSES ALL VALIDATIONS AND DE-REGISTERS CORRECTLY, THE DEAMON SENDS THE PRE-REGISTRATION REQUEST TO THE YELLOW PAGE -----------------------------.
+2024-07-07T10:06:07.213589 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - 192.168.1.11 - Request decrypted successfully {'data_cifrated_yp': {'iv': 'fLaxKotsyXvPZUaClaOjCA==', 'data': 'flJ0BgoZ7Ymyi+I+jXj8hExKP8+cdwCEBhf1gfz8ii3awAWHxC+mRng8yQfltH4wOqBSJEdDVE9RApeTpN4fnnnSd1wcWFTpMKSTIw5UUE7FquvDckicG892uvuC1WkDWWDLruWwPShNU6NRUZBrViHitF9IUbvodROUKxHqNh7WK8oi1TJk9DAfhDJC3mATdnBedPzHOHFWUmYU+YcmyPuDHEXpwz2RjRt8zXmu162FWQrmFuy15gZQrzUeSw3EB0bQNYT7AsQ6hxcMDvPvyFF1N1XXh2/sK0ShuMLrkotSAJ551VsB0zqsKLZWRGoBhyFHVhr6AF6c329tZpdLn5E3TwrWDdw4kymCWlE3XED04b7VrG99KMFLBxlqyAYnxTgayTL3o+CRKVyK9LMEyc7FG9nbxxmkccNpPJQ4ss3n24CIcg3AHbmllQmEGI5VLlj+kSwkHoH5YXM+9WN2uBWL1yrurwti6FmcS2uJuY1sjXEEKfQoYFsV+kmVonBgOmC5Xa+wwDA4aQ45ih6GzCxglF48qYeNv5yzeRnUmarDQDBVOMomGDJaStKlJLIvLZtZ9PKSYMuSI+joEBUBb3etU6uq4WuXSb7uX3ntMRW9XvEGmHrAgsmHoI/vRg=='}, 'code_totp': '461553', 'shared_key': 'abcd123'}
+2024-07-07T10:06:07.213589 - AgentManager -> Hashing key
+2024-07-07T10:06:07.213589 - AgentManager -> Key hashed
+2024-07-07T10:06:07.213589 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - 192.168.1.11 - Decrypting data sent by the Agent {'iv': 'fLaxKotsyXvPZUaClaOjCA==', 'data': 'flJ0BgoZ7Ymyi+I+jXj8hExKP8+cdwCEBhf1gfz8ii3awAWHxC+mRng8yQfltH4wOqBSJEdDVE9RApeTpN4fnnnSd1wcWFTpMKSTIw5UUE7FquvDckicG892uvuC1WkDWWDLruWwPShNU6NRUZBrViHitF9IUbvodROUKxHqNh7WK8oi1TJk9DAfhDJC3mATdnBedPzHOHFWUmYU+YcmyPuDHEXpwz2RjRt8zXmu162FWQrmFuy15gZQrzUeSw3EB0bQNYT7AsQ6hxcMDvPvyFF1N1XXh2/sK0ShuMLrkotSAJ551VsB0zqsKLZWRGoBhyFHVhr6AF6c329tZpdLn5E3TwrWDdw4kymCWlE3XED04b7VrG99KMFLBxlqyAYnxTgayTL3o+CRKVyK9LMEyc7FG9nbxxmkccNpPJQ4ss3n24CIcg3AHbmllQmEGI5VLlj+kSwkHoH5YXM+9WN2uBWL1yrurwti6FmcS2uJuY1sjXEEKfQoYFsV+kmVonBgOmC5Xa+wwDA4aQ45ih6GzCxglF48qYeNv5yzeRnUmarDQDBVOMomGDJaStKlJLIvLZtZ9PKSYMuSI+joEBUBb3etU6uq4WuXSb7uX3ntMRW9XvEGmHrAgsmHoI/vRg=='}
+2024-07-07T10:06:07.213589 - SymmetricCryptography -> Decrypting data
+2024-07-07T10:06:07.213589 - SymmetricCryptography -> Data decrypted
+2024-07-07T10:06:07.213589 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - 192.168.1.11 - Data decrypted successfully
+2024-07-07T10:06:07.213589 - Key Management -> Loading public key
+2024-07-07T10:06:07.214589 - Key Management -> Public key loaded
+2024-07-07T10:06:07.214589 - Key Management -> Generating asymmetric keys
+2024-07-07T10:06:07.214589 - Key Management -> Generating private key
+2024-07-07T10:06:07.247128 - Key Management -> Private key generated
+2024-07-07T10:06:07.247128 - Key Management -> Generating public key
+2024-07-07T10:06:07.247128 - Key Management -> Public key generated
+2024-07-07T10:06:07.247128 - Key Management -> Asymmetric keys generated
+2024-07-07T10:06:07.247128 - Key Management -> Serializing public key
+2024-07-07T10:06:07.247128 - Key Management -> Public key serialized
+2024-07-07T10:06:07.247128 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - 192.168.1.11 - Successfully generated the asymmetric keys    
+2024-07-07T10:06:07.248127 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - Requesting access data for registration
+2024-07-07T10:06:07.248127 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - Access data requested successfully
+2024-07-07T10:06:07.248127 - Key Management -> Encrypting data with hybrid encryption for agent ef4d32d9-c04a-42d5-8a91-24fff169d0cb
+2024-07-07T10:06:07.248127 - Key Management -> Data to be encrypted: {'public_key': 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFyNUtVYTE0V05MVHUzcGI0RG40TgpiNHdtdVZlcnpxVkFtYXhFSjIzclJqRnVIMU9DMVoxeU9YbEhlVXB5cGZpSEJwUVpYSE53K0RiRXhEL0crS2lrClp5M2wwSFE1bzY4Vit5WDhtZjVhdHhpUDg5UHplbjZyb3N3UU5pVjVxaDd6aVlpYU0zTElRYjVYVTBNZDNsTEsKd1luLzU5MmxuTUZBTmpCQUw4WldrRTRzWXFDZVV2MDZOVUZwWktlR0xQajVGbXQ1L3ljSmZVL0xtdXlqcGFhMQpPOStzeUdYRllsUHNHY05CaCtGdnhOb2dsRjJ1UTJQRjdIcHlweFRENEdqZ0pZRGxya1lkd0Z6NlhTaWlkYUMrClB5RnlQcGQ3NU1FUVJEeS9UMEdPRTZDMXUyRmlFcERnREhyUkYzRHhDYVNJbGZna3hQMkhOY3VzK3FrNFhJSzgKR3dJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==', 'server_uri': 'PYRO:obj_e956c280056749ad8a5ed40bba39b497@192.168.1.11:52729'}
+2024-07-07T10:06:07.248127 - Key Management -> Generating symmetric key
+2024-07-07T10:06:07.248127 - Key Management -> Symmetric key generated
+2024-07-07T10:06:07.248127 - Key Management -> Encrypting data with symmetric key
+2024-07-07T10:06:07.248127 - Key Management -> Data encrypted with symmetric key
+2024-07-07T10:06:07.248127 - Key Management -> Encrypting symmetric key with public key for agent ef4d32d9-c04a-42d5-8a91-24fff169d0cb
+2024-07-07T10:06:07.249126 - Key Management -> Symmetric key encrypted with public key for agent ef4d32d9-c04a-42d5-8a91-24fff169d0cb
+2024-07-07T10:06:07.249126 - Key Management -> Data encrypted with hybrid encryption for agent ef4d32d9-c04a-42d5-8a91-24fff169d0cb
+
+----------------------------- FOURTH STEP - IF THE YP DOES THE PRE-REGISTRATION CORRECTLY, RESPOND TO THE DEAMON -----------------------------
+2024-07-07T10:06:07.247128 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Key pairs generated successfully by the yellow_page
+2024-07-07T10:06:07.247128 - Daemon -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Redirecting to the GatewayManager ...
+
+----------------------------- FIFTH STEP - AGENT PROCEEDS TO REGISTER THROUGH GATEWAYMANAGER -----------------------------
+2024-07-07T10:06:07.249633 - AgentConnectionHandler -> Agent pre-registered: 6p37C...Zsw== (Time: 0.112622 seconds)
+2024-07-07T10:06:07.249633 - AgentConnectionHandler -> Decrypting the data responded by the Yellow Page
+2024-07-07T10:06:07.249633 - SecurityManagement -> Decrypting data responded by yp...
+2024-07-07T10:06:07.249633 - SecurityManagement -> Decrypting data...
+2024-07-07T10:06:07.250646 - SecurityManagement -> Data decrypted successfully
+2024-07-07T10:06:07.250646 - SecurityManagement -> Data decrypted responded by yp successfully
+2024-07-07T10:06:07.250646 - SecurityManagement -> Public key yp set successfully
+2024-07-07T10:06:07.250646 - SecurityManagement -> Serializing public key yp...
+2024-07-07T10:06:07.250646 - SecurityManagement -> Public key yp serialized successfully
+2024-07-07T10:06:07.250646 - AgentConnectionHandler -> Data decrypted (Time: 0.001565 seconds)
+2024-07-07T10:06:07.250646 - AgentConnectionHandler -> Encrypting the data to register
+2024-07-07T10:06:07.250646 - SecurityManagement -> Uploading agent data...
+2024-07-07T10:06:07.331588 - SecurityManagement -> Agent data uploaded successfully
+2024-07-07T10:06:07.331588 - SecurityManagement -> Encrypting data with hibrid encryption...
+2024-07-07T10:06:07.331588 - SecurityManagement -> Data encrypted with hibrid encryption successfully
+2024-07-07T10:06:07.331588 - SecurityManagement -> Encoding request...
+2024-07-07T10:06:07.331588 - SecurityManagement -> Request encoded successfully
+2024-07-07T10:06:07.331588 - AgentConnectionHandler -> Data encrypted to register Os10l...qPA==
+2024-07-07T10:06:07.331588 - AgentConnectionHandler -> Encrypting the data to register
+2024-07-07T10:06:07.475141 - AgentConnectionHandler -> Data encrypted to register Os10l...qPA== (Time: 0.143015 seconds)
+2024-07-07T10:06:07.475141 - AgentConnectionHandler -> Registering the agent. Delivering its capabilities, features, description, functions, etc.
+2024-07-07T10:06:07.475141 - AgentConnectionHandler -> Registering the agent
+
+----------------------------- SEVENTH STEP - GATEWAYMANAGER SENDS REGISTRATION REQUEST TO YP -----------------------------
+2024-07-07T10:06:07.248127 - GatewayManager -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Registering agent
+
+----------------------------- EIGHTH STEP - YP RESPONDS TO GATEWAYMANAGER -----------------------------
+2024-07-07T10:06:07.333588 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - 192.168.1.11 - Registering agent
+2024-07-07T10:06:07.333588 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - 192.168.1.11 - Decrypting data sent by the agent
+2024-07-07T10:06:07.333588 - Key Management -> Decrypting data with private key
+2024-07-07T10:06:07.333588 - Key Management -> Decrypting symmetric key with private key
+2024-07-07T10:06:07.334589 - Key Management -> Symmetric key decrypted with private key
+2024-07-07T10:06:07.334589 - Key Management -> Decrypting data with symmetric key
+2024-07-07T10:06:07.335095 - Key Management -> Data decrypted with symmetric key
+2024-07-07T10:06:07.335095 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - 192.168.1.11 - Data decrypted successfully
+2024-07-07T10:06:07.335095 - Key Management -> Serializing and encoding public key
+2024-07-07T10:06:07.335095 - Key Management -> Public key serialized and encoded
+2024-07-07T10:06:07.335095 - Key Management -> Serializing and encoding private key
+2024-07-07T10:06:07.335095 - Key Management -> Private key serialized and encoded
+2024-07-07T10:06:07.335095 - YellowPage Remote Object -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb - 192.168.1.11 - Agent registered successfully
+
+
+----------------------------- NINTH STEP - GATEWAYMANAGER RESPONDS TO AGENT -----------------------------
+2024-07-07T10:06:07.249126 - GatewayManager -> ef4d32d9-c04a-42d5-8a91-24fff169d0cb -> Registered agent
+
+----------------------------- TENTH STEP - THE AGENT RECEIVES THE INFORMATION -----------------------------
+2024-07-07T10:06:07.475141 - AgentConnectionHandler -> Agent registered
+2024-07-07T10:06:07.475141 - AgentConnectionHandler -> Agent registered (Time: 0.339624 seconds)
+2024-07-07T10:06:07.475141 - SecurityManagement -> Uploading agent data...
+2024-07-07T10:06:07.544016 - SecurityManagement -> Agent data uploaded successfully
+2024-07-07T10:06:07.545016 - SecurityManagement -> Uploading agent data...
+2024-07-07T10:06:07.614112 - SecurityManagement -> Agent data uploaded successfully
