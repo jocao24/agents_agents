@@ -1,6 +1,6 @@
 import uuid
-from ..utils.get_ip import get_ip
-from ..utils.validate_ip import validate_ip
+from src.utils.get_ip import get_ip
+from src.utils.validate_ip import validate_ip
 
 
 def request_ip() -> str:

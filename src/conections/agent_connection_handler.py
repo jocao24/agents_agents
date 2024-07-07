@@ -1,11 +1,11 @@
 import threading
 import time
 import Pyro4
-from ..security.security_management import SecurityManagement
-from ..utils.get_ip import get_ip
-from ..utils.types.agent_type import AgentType
-from ..utils.custom_exception import CustomException
-from ..utils.errors import ErrorTypes
+from src.security.security_management import SecurityManagement
+from src.utils.get_ip import get_ip
+from src.utils.types.agent_type import AgentType
+from src.utils.custom_exception import CustomException
+from src.utils.errors import ErrorTypes
 
 
 class AgentConnectionHandler:

@@ -1,7 +1,7 @@
 from typing_extensions import TypedDict
 from .base.base_agent_provider import AgentProvider
-from ..menus.agent import execute_agent
-from ..security.security_management import SecurityManagement
+from src.menus.agent import execute_agent
+from src.security.security_management import SecurityManagement
 
 
 class RequestSubstractType(TypedDict):

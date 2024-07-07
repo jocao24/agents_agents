@@ -8,9 +8,9 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
 from cryptography.hazmat.primitives.ciphers import Cipher, modes, algorithms
 
-from ..manage_logs.manage_logs import ManagementLogs
-from ..utils.get_ip import get_ip
-from ..utils.types.agent_type import AgentType
+from src.manage_logs.manage_logs import ManagementLogs
+from src.utils.get_ip import get_ip
+from src.utils.types.agent_type import AgentType
 
 
 class SecurityManagement:
