@@ -26,10 +26,11 @@ class ManagementLogs:
                     current_data['logs'] = self.log_buffer
                 self.data_management_instance.save(current_data)
                 self.log_buffer = ""  # Clear the buffer after saving
-        self._start_periodic_flush()  # Reset the timer
-
+        self._start_periodic_flush()  
+    
+    
     def log_message(self, message) -> str:
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = datetime.datetime.now().isoformat()
         log_entry = f"{timestamp} - {message}\n"
         with self.lock:
             self.log_buffer += log_entry
