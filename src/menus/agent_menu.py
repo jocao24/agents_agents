@@ -9,8 +9,14 @@ class AgentMenu:
         self.running = True
 
     def view_logs(self):
+        """View logs of the current session."""
+        print("Fetching logs of the current session...")
+        current_session_logs = self.management_security.management_logs.get_current_session_logs()
+        print(current_session_logs)
+
+    def view_all_logs(self):
         """View all logs related to the agent's activity."""
-        print("Fetching logs...")
+        print("Fetching all logs...")
         all_logs = self.management_security.management_logs.get_all_logs()
         print(all_logs)
 
@@ -26,6 +32,10 @@ class AgentMenu:
         print("Agent Data:")
         for key, value in data_agent.items():
             print(f"{key}: {value}")
+
+    def export_logs_to_csv(self):
+        self.management_security.management_logs.export_logs_to_csv(self.management_security.name_agent)
+        print(f"Logs have been exported to data/logs_{self.management_security.name_agent}.csv")
 
     def exit_menu(self):
         """Exit the menu."""
@@ -109,15 +119,17 @@ class AgentMenu:
         """Show the menu options and handle user input."""
         menu_options = {
             1: ("View Agent Data", self.view_agent_data),
-            2: ("View Logs", self.view_logs),
-            3: ("View Requests and Responses", self.view_requests_and_responses),
-            6: ("Exit", self.exit_menu),
+            2: ("View Logs of Current Session", self.view_logs),
+            3: ("View All Logs", self.view_all_logs),
+            4: ("Export Logs to CSV", self.export_logs_to_csv),
+            5: ("Exit", self.exit_menu),
         }
 
         data_agent = self.management_security.get_data_agent()
         if data_agent.get('is_consumer', False):
-            menu_options[4] = ("Request Resources from Other Agents", self.request_resources)
-            menu_options[5] = ("View Available Agents", self.view_available_agents)
+            menu_options[6] = ("Request Resources from Other Agents", self.request_resources)
+            menu_options[7] = ("View Available Agents", self.view_available_agents)
+            menu_options[8] = ("View Requests and Responses", self.view_requests_and_responses)
 
         while self.running:
             print(show_separators())
@@ -131,7 +143,7 @@ class AgentMenu:
             if choice.isdigit() and int(choice) in menu_options:
                 _, action = menu_options[int(choice)]
                 action()
-                if int(choice) == 6:
+                if int(choice) == 5:
                     break
             else:
                 print("Invalid option. Please enter a valid number.")

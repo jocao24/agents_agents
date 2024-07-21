@@ -3,7 +3,7 @@ from src.agents_remote_objects.client_1 import execute_client_1
 from src.agents_remote_objects.substract import execute_subtract
 from src.agents_remote_objects.multiplication import execute_multiplication
 from src.agents_remote_objects.division import execute_division
-from src.manage_logs.manage_logs import ManagementLogs
+from src.manage_logs.manage_logs_v_2 import ManagementLogs
 from src.security.manage_data_agent import DataManagement
 from src.security.security_management import SecurityManagement
 

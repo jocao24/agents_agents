@@ -3,7 +3,7 @@ import threading
 from src.security.manage_data_agent import DataManagement
 
 
-class ManagementLogs:
+class ManagementLogs2:
     def __init__(self, data_management_instance: DataManagement):
         self.data_management_instance = data_management_instance
         self.log_buffer = ""

@@ -5,9 +5,17 @@ from src.security.secure_storage import SecureStorage
 
 
 class DataManagement:
+    # Obtén la ruta del directorio actual (el que contiene el script que se está ejecutando)
+    _current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Navega un nivel hacia atrás para ubicarte en el directorio que contiene 'src'
+    _project_root = os.path.abspath(os.path.join(_current_dir, os.pardir, os.pardir))
+
+    # Concatena la carpeta 'data' a la ruta del proyecto
+    _data_dir = os.path.join(_project_root, 'data') + os.sep
     def __init__(self, name_agent: str):
         if not hasattr(self, 'initialized', ):
-            self.file_path = f'data/{name_agent}.enc'
+            self.file_path = f'{self._data_dir}data_{name_agent}.enc'
             self.secure_storage = SecureStorage(get_system_uuid().encode(), self.file_path)
             self._ensure_file_exists()
             self.initialized = True
