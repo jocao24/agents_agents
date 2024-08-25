@@ -15,6 +15,7 @@ class ResponseAgentType(TypedDict):
 
 class AgentType(TypedDict):
     id: str
+    uuid: str
     name: str
     description: str
     ip_name_server: str

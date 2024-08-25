@@ -24,6 +24,7 @@ class DataManagement:
         if not os.path.exists(self.file_path):
             self.save({
                 'id': '',
+                'uuid': '',
                 'name': '',
                 'description': '',
                 'ip_name_server': '',

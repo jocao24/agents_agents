@@ -8,20 +8,37 @@ from src.security.manage_data_agent import DataManagement
 
 class LogType(Enum):
     ENCRYPTION = auto()
+    END_ENCRYPTION = auto()
     DECRYPTION = auto()
+    END_DECRYPTION = auto()
+    TIME_TOTAL_REGISTRATION = auto()
+    END_TIME_TOTAL_REGISTRATION = auto()
     REGISTRATION = auto()
+    END_REGISTRATION = auto()
+    REGISTRATION_URI = auto()
+    END_REGISTRATION_URI = auto()
     PREREGISTRATION = auto()
+    END_PREREGISTRATION = auto()
     UPLOAD = auto()
+    END_UPLOAD = auto()
     START_SESSION = auto()
+    END_SESSION = auto()
     KEY_GENERATION = auto()
+    END_KEY_GENERATION = auto()
     SHARED_KEY = auto()
+    END_SHARED_KEY = auto()
     SERIALIZATION = auto()
+    END_SERIALIZATION = auto()
     CONNECTION = auto()
+    END_CONNECTION = auto()
     ERROR = auto()
     DAEMON_START = auto()
+    DAEMON_END = auto()
     OTHER = auto()
     REQUEST = auto()
+    END_REQUEST = auto()
     RESPONSE = auto()
+    END_RESPONSE = auto()
 
 class ComponentType(Enum):
     SECURITY_MANAGEMENT = auto()
@@ -34,25 +51,30 @@ class ComponentType(Enum):
     CLIENT = auto()
 
 class LogEntry:
-    def __init__(self, session_id: str, timestamp: datetime, component: ComponentType, message: str, log_type: LogType, success: bool = True):
+    def __init__(self, session_id: str, timestamp: datetime, component: ComponentType, message: str, log_type: LogType, success: bool = True, time_str: str = None):
         self.session_id = session_id
         self.timestamp = timestamp
         self.component = component
         self.message = message
         self.log_type = log_type
         self.success = success
+        if time_str:
+            self.time_str = time_str
+        else:
+            self.time_str = '0'
+
 
     def __str__(self):
-        return f"{self.session_id},{self.timestamp.isoformat()},{self.component.name},{self.message},{self.log_type.name},{self.success}\n"
+        return f"{self.session_id},{self.timestamp.isoformat()},{self.component.name},{self.message},{self.log_type.name},{self.success},{self.time_str}\n"
     
     def formatted_str(self):
         success_str = "Success" if self.success else "Failure"
-        return f"{self.timestamp.isoformat()} -- {self.component.name} -- {self.message} -- {self.log_type.name}, {success_str}"
+        return f"{self.timestamp.isoformat()} -- {self.component.name} -- {self.message} -- {self.log_type.name}, {success_str}, {self.time_str}"
     
     def display_str(self):
         time_str = self.timestamp.strftime("%H:%M:%S.%f")
         success_str = "Success" if self.success else "Failure"
-        return f"{time_str} - {self.component.name} - {self.message} - {self.log_type.name}, {success_str}"
+        return f"{time_str} - {self.component.name} - {self.message} - {self.log_type.name}, {success_str}, {self.time_str}"
 
 
 
@@ -81,9 +103,9 @@ class ManagementLogs:
                 self.log_buffer = []  # Clear the buffer after saving
         self._start_periodic_flush()  
     
-    def log_message(self, component: ComponentType, message: str, log_type: LogType, success: bool = True):
+    def log_message(self, component: ComponentType, message: str, log_type: LogType, success: bool = True, time_str: str = None) -> str:
         timestamp = datetime.now()
-        log_entry = LogEntry(self.session_id, timestamp, component, message, log_type, success)
+        log_entry = LogEntry(self.session_id, timestamp, component, message, log_type, success, time_str)
         with self.lock:
             self.log_buffer.append(log_entry)
         return str(log_entry)

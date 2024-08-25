@@ -2,6 +2,7 @@ import os
 import threading
 
 import time
+import uuid
 
 from typing_extensions import Any, TypedDict
 from src.conections.agent_connection_handler import AgentConnectionHandler
@@ -22,14 +23,14 @@ class RegisterAgentType(TypedDict):
 def execute_agent(agent_register: RegisterAgentType):
     agent, name_agent, management_security, is_provider, is_consumer = agent_register.values()
     data_agent = management_security.get_data_agent()
-    code_otp = None
+    code_otp = data_agent.get('code_otp')
     shared_key = None
     if data_agent.get('ultimate_shared_key') is None or data_agent.get('ultimate_shared_key') == '':
         shared_key = input('Enter the shared key: ')
         management_security.set_data_agent(data_agent)
 
-    if data_agent['id'] == '':
-        data_agent = request_data_agent(name_agent)
+    if data_agent['uuid'] == '':
+        data_agent['uuid'] = str(uuid.uuid4())
         data_agent['is_provider'] = is_provider
         data_agent['is_consumer'] = is_consumer
         data_agent['ultimate_shared_key'] = shared_key
@@ -63,7 +64,7 @@ def execute_agent(agent_register: RegisterAgentType):
                         exit()
                     else:
                         print(error_desc)
-                        code_otp = input("Enter Code OTP: ")
+                        code_otp = input("Enter Code TOTP: ")
                         continue
             print(error_desc)
             print(f"Error: {e}")

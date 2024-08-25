@@ -25,10 +25,6 @@ class AgentMenu:
         data_agent = self.management_security.get_data_agent()
         del data_agent['ultimate_shared_key']
         del data_agent['logs']
-        if 'requests' in data_agent:
-            del data_agent['requests']
-        if 'responses' in data_agent:
-            del data_agent['responses']
         print("Agent Data:")
         for key, value in data_agent.items():
             print(f"{key}: {value}")
@@ -123,13 +119,13 @@ class AgentMenu:
             3: ("View All Logs", self.view_all_logs),
             4: ("Export Logs to CSV", self.export_logs_to_csv),
             5: ("Exit", self.exit_menu),
+            6: ("View Requests and Responses", self.view_requests_and_responses),
         }
 
         data_agent = self.management_security.get_data_agent()
         if data_agent.get('is_consumer', False):
             menu_options[6] = ("Request Resources from Other Agents", self.request_resources)
             menu_options[7] = ("View Available Agents", self.view_available_agents)
-            menu_options[8] = ("View Requests and Responses", self.view_requests_and_responses)
 
         while self.running:
             print(show_separators())

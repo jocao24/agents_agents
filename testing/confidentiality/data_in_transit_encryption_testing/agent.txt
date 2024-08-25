@@ -72,7 +72,7 @@
 2024-07-07T10:04:49.959503 - SecurityManagement -> Data encoded deamon successfully
 2024-07-07T10:04:49.959503 - AgentConnectionHandler -> Data encrypted to pre-register: FiqxA...asw== (Time: 0.000594 seconds)
 2024-07-07T10:04:49.959503 - AgentConnectionHandler -> Pre-registering the agent
-2024-07-07T10:04:49.961590 - AgentConnectionHandler -> Error: connection to ('192.168.1.11', 9091) rejected: otp_required: An OTP code is required to authenticate to the GatewayManager. (Time: 0.002016 seconds)
+2024-07-07T10:04:49.961590 - AgentConnectionHandler -> Error: connection to ('192.168.1.11', 9091) rejected: otp_required: An TOTP code is required to authenticate to the GatewayManager. (Time: 0.002016 seconds)
 2024-07-07T10:06:07.136401 - AgentConnectionHandler -> Registering the agent
 2024-07-07T10:06:07.136401 - AgentConnectionHandler -> Encrypting the data to pre-register
 2024-07-07T10:06:07.136401 - SecurityManagement -> Encrypting data yp...
