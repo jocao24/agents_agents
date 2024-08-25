@@ -13,6 +13,9 @@ class DataManagement:
 
     # Concatena la carpeta 'data' a la ruta del proyecto
     _data_dir = os.path.join(_project_root, 'data') + os.sep
+    # Si la carpeta 'data' no existe, la crea
+    if not os.path.exists(_data_dir):
+        os.makedirs(_data_dir)
     def __init__(self, name_agent: str):
         if not hasattr(self, 'initialized', ):
             self.file_path = f'{self._data_dir}data_{name_agent}.enc'
