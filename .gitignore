@@ -2,3 +2,5 @@
 venv
 data
 *.pyc
+analysis_results/*
+analyze_request_times.py

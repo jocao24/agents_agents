@@ -59,21 +59,49 @@ class AgentConnectionHandler:
 
     def register(self, code_otp: str = ''):
         start_time_total = time.perf_counter()
-
         try:
+            yellow_page_uuid = self.security_management.server.uuid if hasattr(self.security_management.server, 'uuid') else None
             print('Registering the agent')
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Initial Registering the agent', LogType.TIME_TOTAL_REGISTRATION)
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Initial Registering the agent', 
+                LogType.TIME_TOTAL_REGISTRATION,
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
             
             # ENCRYPTION
             start_time = time.perf_counter()
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Encrypting the data to pre-register', LogType.ENCRYPTION)
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Encrypting the data to pre-register', 
+                LogType.ENCRYPTION,
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
             request_data_to_pre_register = self.security_management.encrypt_data_with_shared_key(code_otp)
             end_time = time.perf_counter()
             encryption_time = end_time - start_time
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, f'Data encrypted to pre-register: {self._shorten_string(request_data_to_pre_register["data"])}', LogType.END_ENCRYPTION, time_str=f"{encryption_time:.9f}")
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                f'Data encrypted to pre-register: {self._shorten_string(request_data_to_pre_register["data"])}', 
+                LogType.END_ENCRYPTION, 
+                time_str=f"{encryption_time:.9f}",
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
 
             print('Data encrypted to pre-register')
             self.gateway_proxy._pyroHandshake = request_data_to_pre_register
+            # Obtener el UUID del Yellow Page
+
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Starting registration process', 
+                LogType.REGISTRATION,
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
 
             # PREREGISTRATION
             start_time = time.perf_counter()
@@ -81,45 +109,123 @@ class AgentConnectionHandler:
             response = self.gateway_proxy.register(self.security_management.uuid_agent)
             end_time = time.perf_counter()
             preregistration_time = end_time - start_time
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, f'Agent pre-registered: {self._shorten_string(response["data"])}', LogType.END_PREREGISTRATION, time_str=f"{preregistration_time:.9f}")
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Agent preregistered with Yellow Page', 
+                LogType.END_PREREGISTRATION, 
+                time_str=f"{preregistration_time:.9f}",
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
 
             # DECRYPTION
             start_time = time.perf_counter()
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Decrypting the data responded by the Yellow Page', LogType.DECRYPTION)
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Decrypting the data responded by the Yellow Page', 
+                LogType.DECRYPTION,
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
             self.security_management.decrypt_data_responded_by_yp(response)
             end_time = time.perf_counter()
             decryption_time = end_time - start_time
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Data decrypted', LogType.END_DECRYPTION, time_str=f"{decryption_time:.9f}")
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Data decrypted', 
+                LogType.END_DECRYPTION, 
+                time_str=f"{decryption_time:.9f}",
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
             public_key_yp = self.security_management.public_key_yp
 
             # REGISTRATION ENCRYPTION
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Encrypting the data to register', LogType.ENCRYPTION)
-            data_encrypted = self.security_management.encrypt_data_with_public_key(self.security_management.get_data_agent(), public_key_yp, self.security_management.uuid_agent)
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Data encrypted to register {self._shorten_string(data_encrypted["data"])}', LogType.END_ENCRYPTION)
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Encrypting the data to register', 
+                LogType.ENCRYPTION,
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
+            data_encrypted = self.security_management.encrypt_data_with_public_key(
+                self.security_management.get_data_agent(), 
+                public_key_yp, 
+                self.security_management.uuid_agent
+            )
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                f'Data encrypted to register {self._shorten_string(data_encrypted["data"])}', 
+                LogType.END_ENCRYPTION,
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
 
             # FINAL REGISTRATION
             start_time = time.perf_counter()
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Registering the agent with the Gateway', LogType.REGISTRATION)
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Registering the agent with the Gateway', 
+                LogType.REGISTRATION,
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
             self.security_management.server.register_agent(self._shorten_string(data_encrypted))
             end_time = time.perf_counter()
             registration_time = end_time - start_time
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Agent registered with Gateway', LogType.END_REGISTRATION, time_str=f"{registration_time:.9f}")
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Agent registered with Gateway', 
+                LogType.END_REGISTRATION, 
+                time_str=f"{registration_time:.9f}",
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
 
             # FINALIZE REGISTRATION
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Registering the agent. Delivering its capabilities | features | description| functions | etc.', LogType.REGISTRATION)
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Registering the agent. Delivering its capabilities | features | description| functions | etc.', 
+                LogType.REGISTRATION,
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
             self.name_server.register(f'{self.security_management.uuid_agent}', self.get_uri_agent(self.remote_object))
             end_time_total = time.perf_counter()
             total_time = end_time_total - start_time_total
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Agent registered', LogType.END_REGISTRATION, time_str=f"{total_time:.9f}")
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Agent registered', 
+                LogType.END_REGISTRATION, 
+                time_str=f"{total_time:.9f}",
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
             daemon_thread = threading.Thread(target=self.daemon.requestLoop)
-            print('Agent {self.security_management.uuid_agent} - {self.security_management.get_data_agent()["name"]} registered in {total_time:.9f} seconds')
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, 'Agent registered', LogType.END_TIME_TOTAL_REGISTRATION, success=True, time_str=f"{total_time:.9f}")
+            print(f'Agent {self.security_management.uuid_agent} - {self.security_management.get_data_agent()["name"]} registered in {total_time:.9f} seconds')
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                'Agent registered', 
+                LogType.END_TIME_TOTAL_REGISTRATION, 
+                success=True, 
+                time_str=f"{total_time:.9f}",
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid
+            )
             daemon_thread.daemon = True
             daemon_thread.start()
         except Exception as e:
             end_time_total = time.perf_counter()
             total_time = end_time_total - start_time_total
-            self.security_management.management_logs.log_message(ComponentType.AGENT_CONNECTION_HANDLER, f'Error: {str(e)}', LogType.ERROR, success=False, time_str=f"{total_time:.9f}")
+            self.security_management.management_logs.log_message(
+                ComponentType.AGENT_CONNECTION_HANDLER, 
+                f'Error: {str(e)}', 
+                LogType.ERROR, 
+                success=False, 
+                time_str=f"{total_time:.9f}",
+                agent_uuid=self.security_management.uuid_agent,
+                yellow_page_uuid=yellow_page_uuid if 'yellow_page_uuid' in locals() else None
+            )
             raise e
 
     def activate_daemon(self):

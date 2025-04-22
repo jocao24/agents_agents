@@ -8,6 +8,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
 from cryptography.hazmat.primitives.ciphers import Cipher, modes, algorithms
+import uuid
 
 from src.manage_logs.manage_logs_v_2 import ComponentType, LogType, ManagementLogs
 from src.utils.get_ip import get_ip
@@ -17,10 +18,18 @@ from src.utils.types.agent_type import AgentType
 class SecurityManagement:
     def __init__(self, name_agent: str, management_logs: ManagementLogs, shared_key: str):
         self.management_logs = management_logs
-        self.management_logs.start_new_session_log()
         self.management_data = management_logs.data_management_instance
         self.id_agent = None
-        self.uuid_agent = None
+        
+        # Cargar los datos del agente y obtener su UUID existente
+        self.agent_data = self.management_data.load() or {}
+        self.uuid_agent = self.agent_data.get('uuid')
+        
+        # Solo establecer el UUID en ManagementLogs si existe
+        if self.uuid_agent:
+            self.management_logs.set_default_agent_uuid(self.uuid_agent)
+        
+        # Generar claves
         self.private_key = self.generate_private_key()
         self.public_key = self.generate_public_key()
         self.name_agent = name_agent
@@ -30,11 +39,38 @@ class SecurityManagement:
         self.uri_yp = None
         self.ns = None
         self.server = None
-        self.agent_data = None
-        self.upload_agent_data()
-        self.management_logs.log_message(ComponentType.SECURITY_MANAGEMENT, 'SecurityManagement initialized', LogType.START_SESSION)
-        self.agent_data['ultimate_shared_key'] = shared_key
-        self.save_agent_data()
+        
+        # Determinar el tipo de agente
+        self.agent_type = None
+        if 'is_provider' in self.agent_data and self.agent_data['is_provider']:
+            if 'name' in self.agent_data:
+                if 'adder' in self.agent_data['name'].lower():
+                    self.agent_type = 'Addition'
+                elif 'subtract' in self.agent_data['name'].lower():
+                    self.agent_type = 'Subtraction'
+                elif 'multiplication' in self.agent_data['name'].lower():
+                    self.agent_type = 'Multiplication'
+                elif 'division' in self.agent_data['name'].lower():
+                    self.agent_type = 'Division'
+        elif 'is_consumer' in self.agent_data and self.agent_data['is_consumer']:
+            self.agent_type = 'Consumer'
+        
+        # Iniciar la sesión
+        self.management_logs.start_new_session_log()
+        
+        # Log de inicialización
+        self.management_logs.log_message(
+            ComponentType.SECURITY_MANAGEMENT,
+            'SecurityManagement initialized',
+            LogType.START_SESSION,
+            agent_uuid=self.uuid_agent,
+            agent_type=self.agent_type
+        )
+        
+        # Guardar la clave compartida
+        if self.uuid_agent:
+            self.agent_data['ultimate_shared_key'] = shared_key
+            self.save_agent_data()
 
     def set_ns(self, ns: Pyro4.Proxy):
         self.ns = ns

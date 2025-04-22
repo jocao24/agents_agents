@@ -28,16 +28,21 @@ agents_functions = {
 }
 
 def execute_agent(agent_function, shared_key, code_otp, description, skills, ip_name_server, agent_name, agent_id, agent_type):
-    
+    # Primero, crear y cargar los datos del agente
     management_data = DataManagement(f'{agent_name}_{agent_id}')
-    management_logs = ManagementLogs(management_data)
-    management_security = SecurityManagement(agent_name, management_logs, shared_key)
-    uuid_agent = management_data.load().get('uuid')
+    existing_data = management_data.load() or {}
+    
+    # Asegurar que tengamos un UUID consistente
+    uuid_agent = existing_data.get('uuid')
+    if not uuid_agent:
+        uuid_agent = str(uuid.uuid4())
+        
+    # Preparar los datos del agente
     data_agent = {
         "name": f'{agent_name}_{agent_id}',
         "description": description,
-        "id": management_data.load().get('id'),
-        "uuid": uuid_agent if uuid_agent else str(uuid.uuid4()),
+        "id": existing_data.get('id'),
+        "uuid": uuid_agent,
         "ip_name_server": ip_name_server,
         "skills": skills,
         "ultimate_shared_key": shared_key,
@@ -45,7 +50,17 @@ def execute_agent(agent_function, shared_key, code_otp, description, skills, ip_
         "is_provider": True if agent_type != 5 else False,
         "is_consumer": True if agent_type == 5 else False,
     }
+    
+    # Guardar los datos antes de inicializar cualquier componente
     management_data.save(data_agent)
+    
+    # Ahora crear los componentes con el UUID ya establecido
+    management_logs = ManagementLogs(management_data)
+    management_logs.set_default_agent_uuid(uuid_agent)
+    
+    management_security = SecurityManagement(agent_name, management_logs, shared_key)
+    
+    # Ejecutar el agente
     agent_function(management_security)
 
 if __name__ == "__main__":

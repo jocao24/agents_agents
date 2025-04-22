@@ -1,6 +1,8 @@
 from src.utils.separators import show_separators, show_center_text_with_separators
 from src.security.security_management import SecurityManagement
-
+import uuid
+from src.manage_logs.manage_logs_v_2 import LogType, ComponentType 
+import time
 
 class AgentMenu:
     def __init__(self, management_security: SecurityManagement, remote_object):
@@ -89,14 +91,52 @@ class AgentMenu:
             agent_id = agents[int(choice) - 1]['id']
             num1 = float(input("Enter number 1: "))
             num2 = float(input("Enter number 2: "))
-            response = self.remote_object.send_request_to_agent(agent_id, {'num1': num1, 'num2': num2})
+            request_uuid = str(uuid.uuid4())
+            
+            # Registrar tiempo de inicio
+            start_time = time.perf_counter()
+            
+            # Log de inicio de la solicitud del usuario
+            self.management_security.management_logs.log_message(
+                ComponentType.MENU,
+                f'User started request with agent {agent_id}',
+                LogType.USER_REQUEST_START,
+                agent_uuid=self.management_security.uuid_agent,
+                uuid_request=request_uuid
+            )
+            
+            response = self.remote_object.send_request_to_agent(agent_id, {
+                'num1': num1, 
+                'num2': num2,
+                'request_uuid': request_uuid
+            })
 
             print(show_separators())
             print(show_center_text_with_separators("Response from Agent"))
             print(show_separators())
-            print(f"Request ID: {response['id_request']}")
-            print(f"Result: {response['data_response']['result']}")
+            
+            if response is None:
+                print("Error: No response received from the agent.")
+            elif isinstance(response, str):
+                print(f"Error: {response}")
+            else:
+                print(f"Request ID: {response['id_request']}")
+                print(f"Result: {response['data_response']['result']}")
             print(show_separators())
+            
+            # Calcular tiempo total
+            end_time = time.perf_counter()
+            total_time = end_time - start_time
+            
+            # Log de fin de la solicitud del usuario con el tiempo total
+            self.management_security.management_logs.log_message(
+                ComponentType.MENU,
+                f'User completed request with agent {agent_id}',
+                LogType.USER_REQUEST_END,
+                time_str=f"{total_time:.9f}",
+                agent_uuid=self.management_security.uuid_agent,
+                uuid_request=request_uuid
+            )
         else:
             print("Invalid option. Please select a valid number.")
 

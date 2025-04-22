@@ -56,7 +56,7 @@ def export_all_logs_to_csv():
         for future in as_completed(futures):
             all_logs.extend(future.result())
 
-    headers = ["session_id", "timestamp", "component", "message", "log_type", "success", "time", "agent_name"]
+    headers = ["session_id", "timestamp", "component", "message", "log_type", "success", "time", "agent_uuid", "yellow_page_uuid", "agent_type", "uuid_agent_request", "uuid_agent_response", "uuid_request", "agent_name"]    
     csv_filename = os.path.join(data_dir, 'all_logs.csv')
     with open(csv_filename, mode='w', newline='') as file:
         writer = csv.writer(file)
