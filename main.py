@@ -3,9 +3,24 @@ import subprocess
 import os
 import sys
 import threading
-import win32gui
-import win32con
-import pywintypes
+import platform
+import shutil
+
+# Determinar sistema operativo
+IS_WINDOWS = platform.system() == "Windows"
+
+if IS_WINDOWS:
+    import win32gui
+    import win32con
+    import pywintypes
+else:
+    # Crear stubs para evitar errores en Linux/WSL
+    class _Dummy:
+        def __getattr__(self, _):
+            return lambda *args, **kwargs: None
+
+    win32gui = win32con = pywintypes = _Dummy()
+
 import time
 import csv
 import uuid
@@ -161,27 +176,36 @@ def request_data_agent(agent_name: str, agent_type: int, previous_data=None):
     return data_agent
 
 def create_and_execute_agent(agent_type, shared_key, code_otp, description, skills, ip_name_server, agent_name, agent_id):
-    window_title = f"{agent_name}_{agent_id}"
-    command = f'start /MIN cmd /C "title {window_title} & {sys.executable} connect_agent.py {agent_type} {shared_key} {code_otp} \"{description}\" \"{skills}\" {ip_name_server} {agent_name} {agent_id}"'
-    process = subprocess.Popen(command, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP, shell=True)
-    time.sleep(1)
-    hwnd = get_hwnd_by_title(window_title)
-    if hwnd:
-        print(f"Obtained hwnd for process {process.pid}: {hwnd}")
-        win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
+    if IS_WINDOWS:
+        window_title = f"{agent_name}_{agent_id}"
+        command = f'start /MIN cmd /C "title {window_title} & {sys.executable} connect_agent.py {agent_type} {shared_key} {code_otp} \"{description}\" \"{skills}\" {ip_name_server} {agent_name} {agent_id}"'
+        process = subprocess.Popen(command, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP, shell=True)
+        time.sleep(1)
+        hwnd = get_hwnd_by_title(window_title)
+        if hwnd:
+            print(f"Obtained hwnd for process {process.pid}: {hwnd}")
+            win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
+        else:
+            print(f"Failed to obtain hwnd for process {process.pid}")
     else:
-        print(f"Failed to obtain hwnd for process {process.pid}")
-    return (process, agent_name, hwnd, shared_key, code_otp, description, skills, ip_name_server, agent_id)
-    window_title = f"{agent_name} {agent_id}"
-    command = f'start /MIN cmd /C "title {window_title} & {sys.executable} connect_agent.py {agent_type} {shared_key} {code_otp} \"{description}\" \"{skills}\" {ip_name_server} {agent_name} {agent_id}"'
-    process = subprocess.Popen(command, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP, shell=True)
-    time.sleep(1)
-    hwnd = get_hwnd_by_title(window_title)
-    if hwnd:
-        print(f"Obtained hwnd for process {process.pid}: {hwnd}")
-        win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
-    else:
-        print(f"Failed to obtain hwnd for process {process.pid}")
+        # Linux/WSL: abrir una nueva ventana de terminal visible
+        args_list = [
+            sys.executable, "connect_agent.py", str(agent_type), shared_key,
+            code_otp, description, skills, ip_name_server, agent_name, agent_id
+        ]
+
+        # Determinar emulador de terminal disponible
+        if shutil.which("gnome-terminal"):
+            cmd = ["gnome-terminal", "--"] + args_list
+        elif shutil.which("x-terminal-emulator"):
+            cmd = ["x-terminal-emulator", "-e"] + args_list
+        elif shutil.which("xterm"):
+            cmd = ["xterm", "-e"] + args_list
+        else:
+            # Fallback: ejecutar en la misma consola
+            cmd = args_list
+        process = subprocess.Popen(cmd)
+        hwnd = None
     return (process, agent_name, hwnd, shared_key, code_otp, description, skills, ip_name_server, agent_id)
 
 def create_and_execute_agents(agent_type, num_agents, shared_key, code_otp, description, skills, ip_name_server, previous_data=None):
@@ -227,6 +251,8 @@ def create_and_execute_agents(agent_type, num_agents, shared_key, code_otp, desc
     total_time = (end_time - start_time).total_seconds()
     log_agent_batch(agent_type, num_agents, total_time, start_time.isoformat(), end_time.isoformat())
 def get_hwnd_by_title(title):
+    if not IS_WINDOWS:
+        return None
     def callback(hwnd, titles):
         if win32gui.IsWindowVisible(hwnd) and title in win32gui.GetWindowText(hwnd):
             titles.append(hwnd)
@@ -235,9 +261,12 @@ def get_hwnd_by_title(title):
     return titles[0] if titles else None
 
 def allow_set_foreground_window():
-    ctypes.windll.user32.AllowSetForegroundWindow(ctypes.windll.kernel32.GetCurrentProcessId())
+    if IS_WINDOWS:
+        ctypes.windll.user32.AllowSetForegroundWindow(ctypes.windll.kernel32.GetCurrentProcessId())
 
 def show_window(hwnd):
+    if not IS_WINDOWS:
+        return
     if hwnd and win32gui.IsWindow(hwnd):
         print(f"Showing window with hwnd: {hwnd}")
         win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
@@ -257,7 +286,7 @@ def show_window(hwnd):
         print("Invalid window handle, cannot bring window to front.")
 
 def hide_window(hwnd):
-    if hwnd and win32gui.IsWindow(hwnd):
+    if IS_WINDOWS and hwnd and win32gui.IsWindow(hwnd):
         win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
 
 def open_agent_console(agent_index):
@@ -270,11 +299,14 @@ def open_agent_console(agent_index):
 def terminate_all_agents():
     def terminate_agent(process, hwnd):
         try:
-            if hwnd:
+            if IS_WINDOWS and hwnd:
                 win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
                 time.sleep(0.5)
             if process.poll() is None:
-                ctypes.windll.kernel32.TerminateProcess(int(process._handle), -1)
+                if IS_WINDOWS:
+                    ctypes.windll.kernel32.TerminateProcess(int(process._handle), -1)
+                else:
+                    process.terminate()
                 process.wait()
                 return f"Forcefully terminated process {process.pid}"
             else:
@@ -352,6 +384,55 @@ def manage_all_agents():
         if int(agent_option) == len(agent_processes) + 1:
             break
         open_agent_console(int(agent_option) - 1)
+
+# -----------------------------
+# MODO SIMPLIFICADO PARA LINUX
+# -----------------------------
+
+if not IS_WINDOWS:
+    # CLI mínimo: lanza un agente en la consola actual
+    from connect_agent import agents_functions, execute_agent
+
+    print("=== Agent Launcher (Linux/WSL modo simplificado) ===")
+    while True:
+        print("Seleccione el tipo de agente que desea ejecutar:")
+        print("1. Addition")
+        print("2. Subtraction")
+        print("3. Multiplication")
+        print("4. Division")
+        print("5. Consumer")
+        print("6. Salir")
+        opt = input("Opción: ")
+        if opt == '6':
+            sys.exit(0)
+        if opt not in {'1','2','3','4','5'}:
+            print("Opción inválida\n")
+            continue
+
+        agent_type = int(opt)
+        shared_key = input("Shared key: ")
+        code_otp = input("Código TOTP: ")
+        description = input("Descripción del agente: ")
+        skills = input("Habilidades (separadas por coma): ").split(',')
+        ip_name_server = input("IP del NameServer (enter para autodetectar): ") or get_ip()
+        agent_name = input("Nombre base del agente (ej. agent_adder): ") or {
+            1: "agent_adder", 2: "agent_subtractor", 3: "agent_multiplier", 4: "agent_divider", 5: "agent_consumer"}.get(agent_type, "agent")
+        agent_id = str(uuid.uuid4())
+
+        agent_function = agents_functions[agent_type]
+        # Ejecutar de forma bloqueante en la misma terminal
+        execute_agent(agent_function, shared_key, code_otp, description, skills, ip_name_server, agent_name, agent_id, agent_type)
+
+        print("Agente finalizado. ¿Desea lanzar otro? (y/n) -> ", end='')
+        if (input().lower() or 'n') != 'y':
+            break
+
+    sys.exit(0)
+
+# -------------------------------------------
+# Código ORIGINAL para Windows a partir de aquí
+# -------------------------------------------
+
 if __name__ == "__main__":
     start_time = datetime.now()
     print(f"Program started at: {start_time.isoformat()}")
