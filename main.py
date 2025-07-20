@@ -386,36 +386,37 @@ def manage_all_agents():
         open_agent_console(int(agent_option) - 1)
 
 # -----------------------------
-# MODO SIMPLIFICADO PARA LINUX
+# SIMPLE MODE FOR LINUX/WSL
 # -----------------------------
 
 if not IS_WINDOWS:
     # CLI mínimo: lanza un agente en la consola actual
     from connect_agent import agents_functions, execute_agent
 
-    print("=== Agent Launcher (Linux/WSL modo simplificado) ===")
+    print("=== Agent Launcher (Linux/WSL – simple mode) ===")
     while True:
-        print("Seleccione el tipo de agente que desea ejecutar:")
+        print("Select the agent type:")
         print("1. Addition")
         print("2. Subtraction")
         print("3. Multiplication")
         print("4. Division")
         print("5. Consumer")
-        print("6. Salir")
-        opt = input("Opción: ")
+        print("6. Exit")
+        opt = input("Option: ")
         if opt == '6':
             sys.exit(0)
         if opt not in {'1','2','3','4','5'}:
-            print("Opción inválida\n")
+            print("Invalid option\n")
             continue
 
         agent_type = int(opt)
+        description = input("Agent description: ")
+        skills_input = input("Skills (comma separated): ")
+        skills = skills_input.split(',') if skills_input else []
+        ip_name_server = input("NameServer IP (blank to autodetect): ") or get_ip()
         shared_key = input("Shared key: ")
-        code_otp = input("Código TOTP: ")
-        description = input("Descripción del agente: ")
-        skills = input("Habilidades (separadas por coma): ").split(',')
-        ip_name_server = input("IP del NameServer (enter para autodetectar): ") or get_ip()
-        agent_name = input("Nombre base del agente (ej. agent_adder): ") or {
+        code_otp = input("TOTP code: ")
+        agent_name = input("Base agent name (default depends on type): ") or {
             1: "agent_adder", 2: "agent_subtractor", 3: "agent_multiplier", 4: "agent_divider", 5: "agent_consumer"}.get(agent_type, "agent")
         agent_id = str(uuid.uuid4())
 
@@ -423,7 +424,7 @@ if not IS_WINDOWS:
         # Ejecutar de forma bloqueante en la misma terminal
         execute_agent(agent_function, shared_key, code_otp, description, skills, ip_name_server, agent_name, agent_id, agent_type)
 
-        print("Agente finalizado. ¿Desea lanzar otro? (y/n) -> ", end='')
+        print("Agent finished. Launch another? (y/n) -> ", end='')
         if (input().lower() or 'n') != 'y':
             break
 
